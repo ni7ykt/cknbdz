@@ -41,7 +41,6 @@
         }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-        /* Glitch 極致版 */
         .glitch {
             position: relative;
             display: inline-block;
@@ -104,24 +103,17 @@
             box-shadow: 0 0 160px var(--accent-red);
         }
 
-        /* 紅爆層 - 修正永遠全紅問題 */
         #enter-blast {
-            position: fixed;
-            inset: 0;
-            background: #ff0d0d;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 99999;  /* 高於內容但低於 start-screen */
+            position: fixed; inset: 0; background: #ff0d0d; opacity: 0;
+            pointer-events: none; z-index: 99999;
             transition: opacity 1.5s ease-out;
         }
 
-        /* 主內容初始隱藏 */
         #viewport {
             opacity: 0;
             transition: opacity 1.8s ease;
         }
 
-        /* 其他原有樣式 */
         .noise-overlay { opacity: 0.04; }
         #webgl-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
         #mouse-blob {
@@ -159,7 +151,6 @@
         <source src="https://audio.jukehost.co.uk/TRoppfRscqjnGzjovKLTf3FCvxDDgAFL" type="audio/mpeg">
     </audio>
 
-    <!-- 極致血紅開頭動畫 -->
     <div id="start-screen">
         <div class="scanline-fast"></div>
         <div id="shutter-top" class="absolute inset-0 bg-black z-0 pointer-events-none" style="clip-path: polygon(0 0, 100% 0, 100% 100%);"></div>
@@ -304,7 +295,7 @@
             <!-- CHAPTER 4: SOLUTION -->
             <section id="solution" class="min-h-screen flex items-center justify-center px-6 md:px-12 border-y border-white/10 bg-black" data-chapter="CH.04 PROTOCOL">
                 <div class="max-w-[1200px] mx-auto w-full text-center">
-                    <div class="text-red-500 font-mono mb-4 animate-pulse">SYSTEM OVERRIDE</div>
+                    <div class="text-cyan-400 font-mono mb-4 animate-pulse">SYSTEM OVERRIDE</div>
                     <h2 class="text-hero text-white split-text glitch" data-text="CYNUKE PROTOCOL">CYNUKE PROTOCOL</h2>
                     <p class="text-xl text-gray-400 mx-auto mt-8 anim-fade max-w-2xl">我們重寫了底層邏輯，利用 <span class="text-white">Asyncio 非阻塞架構</span>，繞過限制，實現真正的並發攻擊。</p>
                 </div>
@@ -604,7 +595,6 @@
     </div>
 
     <script>
-        // === 完整開頭動畫 + 修正全紅問題 ===
         document.addEventListener('DOMContentLoaded', () => {
             const startScreen = document.getElementById('start-screen');
             const viewport = document.getElementById('viewport');
@@ -612,11 +602,10 @@
             const bgm = document.getElementById('bg-music');
             const log = document.getElementById('boot-log');
             const blast = document.getElementById('enter-blast');
-            bgm.volume = 0.28;
 
+            bgm.volume = 0.28;
             let isReady = false;
 
-            // GSAP 強化序列
             const introTl = gsap.timeline({ onComplete: () => isReady = true });
 
             introTl
@@ -631,7 +620,6 @@
                 .fromTo('#logo-container', { scale: 0.2, opacity: 0, rotation: -180 }, { scale: 1, opacity: 1, rotation: 0, duration: 1.6, ease: "elastic.out(1.2,0.3)" }, "-=1")
                 .to('#start-content', { opacity: 1, y: -40, duration: 1.4 }, "-=1.2");
 
-            // 流星雨
             const meteorContainer = document.getElementById('meteor-container');
             for(let i = 0; i < 60; i++) {
                 let m = document.createElement('div');
@@ -644,7 +632,6 @@
                 meteorContainer.appendChild(m);
             }
 
-            // 逐行 log 打字
             setTimeout(() => {
                 log.style.opacity = '1';
                 const lines = log.innerHTML.split('<br>');
@@ -660,12 +647,10 @@
                 });
             }, 2200);
 
-            // 進入主頁 - 修正全紅問題
             const initSite = () => {
                 if (!isReady) return;
                 bgm.play().catch(() => {});
 
-                // 紅爆短暫閃現後自動淡出
                 gsap.to(blast, {
                     opacity: 1,
                     duration: 0.6,
@@ -674,17 +659,15 @@
                         gsap.to(blast, {
                             opacity: 0,
                             duration: 1.2,
-                            delay: 0.4,  // 紅爆持續約 0.4 秒後開始淡出
+                            delay: 0.4,
                             ease: "power3.out"
                         });
                     }
                 });
 
-                // 快門關閉
                 gsap.to('#shutter-top', { clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)", duration: 1.6, ease: "power4.inOut", delay: 0.3 });
                 gsap.to('#shutter-bottom', { clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)", duration: 1.6, ease: "power4.inOut", delay: 0.3 });
 
-                // 隱藏開頭畫面，顯示主內容
                 gsap.to(startScreen, {
                     opacity: 0,
                     duration: 2,
@@ -702,13 +685,11 @@
             startScreen.addEventListener('click', initSite);
         });
 
-        // Lenis + Three.js + 粒子過載
         gsap.registerPlugin(ScrollTrigger);
         const lenis = new Lenis({ duration: 1.5 });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
 
-        // Three.js 粒子 + 過載效果
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x050505, 0.0003);
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
@@ -778,17 +759,38 @@
         animate();
 
         // 滑鼠 blob
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
         const blob = document.getElementById('mouse-blob');
         let bx = 0, by = 0;
         function blobLoop() {
-            bx += (mouseX - bx) * 0.07;
-            by += (mouseY - by) * 0.07;
-            blob.style.transform = `translate3d(${bx}px, ${by}px, 0) translate(-50%, -50%)`;
+            bx += (mouseX - bx) * 0.1;
+            by += (mouseY - by) * 0.1;
+            if (blob) blob.style.transform = `translate3d(${bx}px, ${by}px, 0) translate(-50%, -50%)`;
             requestAnimationFrame(blobLoop);
         }
         blobLoop();
 
-        // 其他原有動畫（split-text、tilt、count-up、terminal、lag marquee）保留
+        // lag marquee
+        const lagTextContent = " @everyone 틓탑컏쳍쫋죉웇쓅싃상뺿벽못뢹뚷뒵늳낱꺯겭ꪫꢩꚧ꒥ꊣꂡ麟鲝骛颙隗钕銓邑躏貍誋袉蚇蒅芃肁繿籽穻硹癷瑵牳灱湯汭橫桩晧摥扣恡幟屝婛塙噗呕剓偑乏䱍䩋䡉䙇䑅䉃䁁㸿㰽㨻㠹㘷㐵㈳〱ⸯⰭ⨫⠩☧␥∣‡ḟᰝᨛ᠙ᘗᐕሓထฏ఍਋ࠉ؇Ѕȃ";
+        const lagContainer = document.getElementById('lag-track-1');
+        if (lagContainer) {
+            const item1 = document.createElement('div');
+            item1.className = 'lag-text-item';
+            item1.innerText = lagTextContent.repeat(10);
+            const item2 = document.createElement('div');
+            item2.className = 'lag-text-item';
+            item2.innerText = lagTextContent.repeat(10);
+            lagContainer.appendChild(item1);
+            lagContainer.appendChild(item2);
+            gsap.to(lagContainer, { xPercent: -50, ease: "none", duration: 30, repeat: -1 });
+        }
+
+        // 其他動畫
         gsap.utils.toArray('.anim-fade').forEach(el => {
             gsap.from(el, {
                 scrollTrigger: { trigger: el, start: 'top 85%' },
@@ -836,4 +838,21 @@
             let target = parseInt(el.getAttribute('data-target'));
             gsap.to(el, {
                 scrollTrigger: { trigger: el, start: 'top 80%' },
-                innerHTML: target,
+                innerHTML: target, duration: 2, snap: { innerHTML: 1 }, ease: 'power1.out'
+            });
+        });
+
+        window.runCmd = function(cmd) {
+            const output = document.getElementById('terminal-output');
+            const newCmd = document.createElement('div');
+            newCmd.className = "mb-2";
+            newCmd.innerHTML = `<span class="text-red-500 mr-2">➜</span><span class="text-white">~ ${cmd}</span>`;
+            output.insertBefore(newCmd, output.lastElementChild);
+            const respEl = document.createElement('div');
+            respEl.innerHTML = `<div class="text-gray-400 pl-6 mb-2">Executing ${cmd}... [SUCCESS]</div>`;
+            output.insertBefore(respEl, output.lastElementChild);
+            output.scrollTop = output.scrollHeight;
+        };
+    </script>
+</body>
+</html>
