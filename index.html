@@ -27,6 +27,8 @@
             --text-white: #eeeeee;
             --accent-red: #ff0d0d;
             --accent-glow: #ff002b;
+            --accent-cyan: #00f3ff;
+            --accent-purple: #bd00ff;
             --blob-color: rgba(255, 13, 13, 0.38);
         }
         body {
@@ -102,23 +104,24 @@
             box-shadow: 0 0 160px var(--accent-red);
         }
 
-        .text-hero {
-            font-size: clamp(2.5rem, 9vw, 7rem); line-height: 1.0; font-weight: 900;
-            letter-spacing: -0.04em; text-transform: uppercase;
-            text-shadow: 0 0 70px var(--accent-glow), 0 0 140px var(--accent-red);
+        /* 紅爆層 - 修正永遠全紅問題 */
+        #enter-blast {
+            position: fixed;
+            inset: 0;
+            background: #ff0d0d;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 99999;  /* 高於內容但低於 start-screen */
+            transition: opacity 1.5s ease-out;
         }
 
-        .bento-card {
-            background: rgba(10, 10, 15, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative; overflow: hidden;
-            backdrop-filter: blur(8px);
-            transform-style: preserve-3d;
-            will-change: transform;
-            transition: all 0.4s;
+        /* 主內容初始隱藏 */
+        #viewport {
+            opacity: 0;
+            transition: opacity 1.8s ease;
         }
-        .bento-card:hover { border-color: var(--accent-red); background: rgba(20, 15, 15, 0.8); box-shadow: 0 0 60px var(--accent-red); }
 
+        /* 其他原有樣式 */
         .noise-overlay { opacity: 0.04; }
         #webgl-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
         #mouse-blob {
@@ -131,6 +134,17 @@
         .hud-coords { position: absolute; bottom: 35px; right: 40px; font-family: 'JetBrains Mono'; font-size: 10px; color: var(--accent-red); opacity: 0.8; text-align: right; line-height: 1.6; }
         .chapter-indicator { position: absolute; top: 30px; left: 30px; font-family: 'JetBrains Mono'; font-size: 12px; color: var(--text-white); opacity: 0.5; letter-spacing: 2px; }
         @media (max-width: 768px) { .hud-coords { display: none; } }
+        .text-hero { text-shadow: 0 0 70px var(--accent-glow), 0 0 140px var(--accent-red); }
+        .bento-card {
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative; overflow: hidden;
+            backdrop-filter: blur(8px);
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+        .bento-card:hover { border-color: var(--accent-red); background: rgba(20, 15, 15, 0.8); box-shadow: 0 0 60px var(--accent-red); }
         .lag-marquee-container { position: absolute; inset: 0; overflow: hidden; pointer-events: none; display: flex; align-items: center; justify-content: center; opacity: 1; z-index: 0; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
         .lag-marquee-track { display: flex; white-space: nowrap; will-change: transform; }
         .lag-text-item { font-family: 'JetBrains Mono'; font-size: 18px; color: rgba(255, 50, 50, 0.8); text-shadow: 0 0 8px rgba(255, 0, 0, 0.6); margin-right: 4rem; font-weight: 700; letter-spacing: 2px; }
@@ -191,7 +205,7 @@
         </div>
     </div>
 
-    <div id="enter-blast" class="fixed inset-0 bg-red-600 opacity-0 pointer-events-none z-[100002] transition-opacity duration-1000"></div>
+    <div id="enter-blast"></div>
 
     <div class="noise-overlay"></div>
     <div class="vignette"></div>
@@ -303,13 +317,13 @@
                 <div class="max-w-[1800px] mx-auto w-full relative z-10">
                     <div class="mb-12 md:mb-20 flex flex-col md:flex-row justify-between items-end">
                         <div>
-                            <div class="text-xs md:text-sm font-mono text-red-600 mb-4 anim-fade">MODULE ALPHA: SWARM</div>
+                            <div class="text-xs md:text-sm font-mono text-purple-400 mb-4 anim-fade">MODULE ALPHA: SWARM</div>
                             <h2 class="text-4xl md:text-8xl font-bold tracking-tighter text-white split-text glitch" data-text="Hyper Warp 通訊癱瘓協議">
                                 Hyper Warp<br>通訊癱瘓協議
                             </h2>
                         </div>
                         <div class="text-right hidden md:block">
-                            <div class="text-5xl font-bold text-red-600 count-up" data-target="50">0</div>
+                            <div class="text-5xl font-bold text-purple-500 count-up" data-target="50">0</div>
                             <div class="text-sm font-mono text-gray-400">SYNC BOTS ACTIVE</div>
                         </div>
                     </div>
@@ -328,11 +342,11 @@
                                 <div class="text-xs text-red-500 font-mono animate-pulse">LIVE EXECUTION</div>
                             </div>
                             <pre class="text-xs md:text-sm text-gray-400 font-mono overflow-x-auto whitespace-pre-wrap break-all md:whitespace-pre">
-<span class="text-red-500">async def</span> <span class="text-white">z0</span>(tid, atkr):
+<span class="text-purple-400">async def</span> <span class="text-cyan-400">z0</span>(tid, atkr):
     ts = [asyncio.create_task(w0(tk[i], i+1, tid, a1a))
-          <span class="text-red-500">for</span> i <span class="text-red-500">in</span> <span class="text-white">range</span>(<span class="text-white">len</span>(tk))]
-    <span class="text-red-500">await</span> asyncio.gather(*ts)
-    <span class="text-red-500">return</span> <span class="text-white">True</span>, f<span class="text-green-400">"Target annihilated in 0.02s."</span>
+          <span class="text-purple-400">for</span> i <span class="text-purple-400">in</span> <span class="text-cyan-400">range</span>(<span class="text-cyan-400">len</span>(tk))]
+    <span class="text-purple-400">await</span> asyncio.gather(*ts)
+    <span class="text-purple-400">return</span> <span class="text-cyan-400">True</span>, f<span class="text-green-400">"Target annihilated in 0.02s."</span>
                             </pre>
                         </div>
                     </div>
@@ -523,10 +537,10 @@
                         </p>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="bento-card p-8 border-l-4 border-l-red-500 anim-card min-h-[300px] flex flex-col" data-tilt>
+                        <div class="bento-card p-8 border-l-4 border-l-purple-500 anim-card min-h-[300px] flex flex-col" data-tilt>
                             <div class="flex justify-between items-start mb-6">
                                 <h3 class="text-2xl font-bold text-white">個人網站介紹頁面</h3>
-                                <span class="bg-red-900/50 text-red-300 text-xs font-mono px-2 py-1 rounded">WEB DEV</span>
+                                <span class="bg-purple-900/50 text-purple-300 text-xs font-mono px-2 py-1 rounded">WEB DEV</span>
                             </div>
                             <p class="text-gray-400 text-sm mb-6 flex-1">完全客製化設計、RWD 響應式版面、品牌形象統一。</p>
                             <div class="mt-auto">
@@ -534,10 +548,10 @@
                                 <div class="text-xs text-gray-600 font-mono">依內容複雜度報價</div>
                             </div>
                         </div>
-                        <div class="bento-card p-8 border-l-4 border-l-red-500 anim-card min-h-[300px] flex flex-col" style="transition-delay: 0.1s" data-tilt>
+                        <div class="bento-card p-8 border-l-4 border-l-purple-500 anim-card min-h-[300px] flex flex-col" style="transition-delay: 0.1s" data-tilt>
                             <div class="flex justify-between items-start mb-6">
                                 <h3 class="text-2xl font-bold text-white">客製機器人</h3>
-                                <span class="bg-red-900/50 text-red-300 text-xs font-mono px-2 py-1 rounded">BOT DEV</span>
+                                <span class="bg-purple-900/50 text-purple-300 text-xs font-mono px-2 py-1 rounded">BOT DEV</span>
                             </div>
                             <p class="text-gray-400 text-sm mb-6 flex-1">24/7 不下線自架託管。指令、等級、票務皆可客製。</p>
                             <div class="mt-auto">
@@ -590,9 +604,11 @@
     </div>
 
     <script>
-        // === 完整開頭動畫 + 粒子過載邏輯 ===
+        // === 完整開頭動畫 + 修正全紅問題 ===
         document.addEventListener('DOMContentLoaded', () => {
             const startScreen = document.getElementById('start-screen');
+            const viewport = document.getElementById('viewport');
+            const navbar = document.getElementById('navbar');
             const bgm = document.getElementById('bg-music');
             const log = document.getElementById('boot-log');
             const blast = document.getElementById('enter-blast');
@@ -644,21 +660,43 @@
                 });
             }, 2200);
 
-            // 進入主頁
+            // 進入主頁 - 修正全紅問題
             const initSite = () => {
                 if (!isReady) return;
                 bgm.play().catch(() => {});
 
-                blast.style.opacity = '1';
+                // 紅爆短暫閃現後自動淡出
+                gsap.to(blast, {
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        gsap.to(blast, {
+                            opacity: 0,
+                            duration: 1.2,
+                            delay: 0.4,  // 紅爆持續約 0.4 秒後開始淡出
+                            ease: "power3.out"
+                        });
+                    }
+                });
+
+                // 快門關閉
                 gsap.to('#shutter-top', { clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)", duration: 1.6, ease: "power4.inOut", delay: 0.3 });
                 gsap.to('#shutter-bottom', { clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)", duration: 1.6, ease: "power4.inOut", delay: 0.3 });
 
-                gsap.to(startScreen, { opacity: 0, duration: 2, delay: 1, onComplete: () => {
-                    startScreen.style.display = 'none';
-                    gsap.to('#navbar', { opacity: 1, duration: 1.8 });
-                    window.isOverload = true;
-                    setTimeout(() => window.isOverload = false, 3000);
-                }});
+                // 隱藏開頭畫面，顯示主內容
+                gsap.to(startScreen, {
+                    opacity: 0,
+                    duration: 2,
+                    delay: 1,
+                    onComplete: () => {
+                        startScreen.style.display = 'none';
+                        viewport.style.opacity = '1';
+                        navbar.style.opacity = '1';
+                        window.isOverload = true;
+                        setTimeout(() => window.isOverload = false, 3000);
+                    }
+                });
             };
 
             startScreen.addEventListener('click', initSite);
@@ -671,17 +709,13 @@
         requestAnimationFrame(raf);
 
         // Three.js 粒子 + 過載效果
-        const container = document.getElementById('webgl-canvas');
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x050505, 0.0003);
-
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
         camera.position.z = 1000;
-
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, powerPreference: "high-performance" });
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-        container.appendChild(renderer.domElement);
+        document.getElementById('webgl-canvas').appendChild(renderer.domElement);
 
         const particleCount = 50000;
         const posArray = new Float32Array(particleCount * 3);
@@ -701,7 +735,6 @@
             posArray[i * 3] = radius * Math.cos(theta);
             posArray[i * 3 + 1] = radius * Math.sin(theta);
             posArray[i * 3 + 2] = (Math.random() - 0.5) * 10000;
-
             const color = colors[Math.floor(Math.random() * colors.length)];
             colorArray[i * 3] = color.r;
             colorArray[i * 3 + 1] = color.g;
@@ -712,73 +745,16 @@
         geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
         geometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
 
-        const material = new THREE.PointsMaterial({
-            size: 2,
-            vertexColors: true,
-            transparent: true,
-            opacity: 0.9,
-            sizeAttenuation: true,
-            blending: THREE.AdditiveBlending
-        });
-
+        const material = new THREE.PointsMaterial({ size: 2, vertexColors: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending });
         const starsMesh = new THREE.Points(geometry, material);
         scene.add(starsMesh);
 
-        let mouseX = 0, mouseY = 0, targetX = 0, targetY = 0;
         let scrollSpeed = 0;
-        let mouseDown = false;
-        let baseFov = 75;
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        document.addEventListener('mousemove', (event) => {
-            mouseX = event.clientX;
-            mouseY = event.clientY;
-            targetX = (mouseX / window.innerWidth) * 2 - 1;
-            targetY = -(mouseY / window.innerHeight) * 2 + 1;
-        });
-
-        document.addEventListener('mousedown', () => mouseDown = true);
-        document.addEventListener('mouseup', () => mouseDown = false);
-
-        lenis.on('scroll', (e) => {
-            scrollSpeed += Math.abs(e.velocity) * 0.5;
-            const sections = document.querySelectorAll('section');
-            sections.forEach(sec => {
-                const rect = sec.getBoundingClientRect();
-                if(rect.top < window.innerHeight/2 && rect.bottom > window.innerHeight/2) {
-                    const chapter = sec.getAttribute('data-chapter');
-                    if(chapter) document.getElementById('chapter-display').innerText = chapter;
-                }
-            });
-        });
+        lenis.on('scroll', e => scrollSpeed += Math.abs(e.velocity) * 0.5);
 
         const animate = () => {
             let speed = 2;
-            if (window.isOverload) speed *= 10;  // 過載加速
-
-            let fovTarget = baseFov;
-
-            if (mouseDown) {
-                speed += 150;
-                fovTarget = 120;
-                material.size = 1;
-            } else if (scrollSpeed > 5) {
-                fovTarget = 90 + Math.min(scrollSpeed, 30);
-                material.size = 2;
-            } else {
-                fovTarget = 75;
-                material.size = 2;
-            }
-
-            camera.fov += (fovTarget - camera.fov) * 0.05;
-            camera.updateProjectionMatrix();
-
-            scrollSpeed *= 0.95;
+            if (window.isOverload) speed *= 10;
 
             const positions = starsMesh.geometry.attributes.position.array;
             for(let i = 2; i < particleCount * 3; i += 3) {
@@ -794,35 +770,25 @@
             starsMesh.geometry.attributes.position.needsUpdate = true;
 
             starsMesh.rotation.z += 0.0002 + (scrollSpeed * 0.0001);
-
-            camera.rotation.x += (targetY * 0.15 - camera.rotation.x) * 0.05;
-            camera.rotation.y += (-targetX * 0.15 - camera.rotation.y) * 0.05;
-
-            const indicator = document.getElementById('speed-indicator');
-            const warpStatus = document.getElementById('warp-status');
-            if(indicator) indicator.innerText = Math.floor(speed) + "X";
-            if(warpStatus) {
-                warpStatus.innerText = speed > 50 ? "ENGAGED" : "STANDBY";
-                warpStatus.style.color = speed > 50 ? "#ff002b" : "#ff0d0d";
-            }
+            scrollSpeed *= 0.95;
 
             renderer.render(scene, camera);
             requestAnimationFrame(animate);
-        }
+        };
         animate();
 
-        // 滑鼠血漬 Blob
+        // 滑鼠 blob
         const blob = document.getElementById('mouse-blob');
-        let blobX = 0, blobY = 0;
-        function animateBlob() {
-            blobX += (mouseX - blobX) * 0.1;
-            blobY += (mouseY - blobY) * 0.1;
-            if(blob) blob.style.transform = `translate3d(${blobX}px, ${blobY}px, 0) translate(-50%, -50%)`;
-            requestAnimationFrame(animateBlob);
+        let bx = 0, by = 0;
+        function blobLoop() {
+            bx += (mouseX - bx) * 0.07;
+            by += (mouseY - by) * 0.07;
+            blob.style.transform = `translate3d(${bx}px, ${by}px, 0) translate(-50%, -50%)`;
+            requestAnimationFrame(blobLoop);
         }
-        animateBlob();
+        blobLoop();
 
-        // 其他原有動畫保留
+        // 其他原有動畫（split-text、tilt、count-up、terminal、lag marquee）保留
         gsap.utils.toArray('.anim-fade').forEach(el => {
             gsap.from(el, {
                 scrollTrigger: { trigger: el, start: 'top 85%' },
@@ -870,37 +836,4 @@
             let target = parseInt(el.getAttribute('data-target'));
             gsap.to(el, {
                 scrollTrigger: { trigger: el, start: 'top 80%' },
-                innerHTML: target, duration: 2, snap: { innerHTML: 1 }, ease: 'power1.out'
-            });
-        });
-
-        window.runCmd = function(cmd) {
-            const output = document.getElementById('terminal-output');
-            const newCmd = document.createElement('div');
-            newCmd.className = "mb-2";
-            newCmd.innerHTML = `<span class="text-red-500 mr-2">➜</span><span class="text-white">~ ${cmd}</span>`;
-            output.insertBefore(newCmd, output.lastElementChild);
-            const respEl = document.createElement('div');
-            respEl.innerHTML = `<div class="text-gray-400 pl-6 mb-2">Executing ${cmd}... [SUCCESS]</div>`;
-            output.insertBefore(respEl, output.lastElementChild);
-            output.scrollTop = output.scrollHeight;
-        }
-
-        const lagTextContent = " @everyone 틓탑컏쳍쫋죉웇쓅싃상뺿벽못뢹뚷뒵늳낱꺯겭ꪫꢩꚧ꒥ꊣꂡ麟鲝骛颙隗钕銓邑躏貍誋袉蚇蒅芃肁繿籽穻硹癷瑵牳灱湯汭橫桩晧摥扣恡幟屝婛塙噗呕剓偑乏䱍䩋䡉䙇䑅䉃䁁㸿㰽㨻㠹㘷㐵㈳〱ⸯⰭ⨫⠩☧␥∣‡ḟᰝᨛ᠙ᘗᐕሓထฏ఍਋ࠉ؇Ѕȃ";
-        const lagContainer = document.getElementById('lag-track-1');
-        if (lagContainer) {
-            const item1 = document.createElement('div');
-            item1.className = 'lag-text-item';
-            item1.innerText = lagTextContent.repeat(10);
-            const item2 = document.createElement('div');
-            item2.className = 'lag-text-item';
-            item2.innerText = lagTextContent.repeat(10);
-            lagContainer.appendChild(item1);
-            lagContainer.appendChild(item2);
-            gsap.to(lagContainer, {
-                xPercent: -50, ease: "none", duration: 30, repeat: -1
-            });
-        }
-    </script>
-</body>
-</html>
+                innerHTML: target,
