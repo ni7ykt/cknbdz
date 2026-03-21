@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VOID EXECUTOR — Discord 終結協議</title>
-  <meta name="description" content="高效、無痕、不可逆的 Discord 伺服器終止工具。"/>
+  <title>VOID EXECUTOR v2 — Discord 終結協議</title>
+  <meta name="description" content="專業級 Discord 伺服器結構崩壞工具。平均執行時間 < 5 秒，100% 不可逆。"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
@@ -13,239 +13,314 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <style>
     :root {
-      --bg: #0a0a0f;
-      --surface: #11111a;
-      --text: #e0f0ff;
+      --bg: #05050a;
+      --surface: #0f0f1a;
+      --text: #d0e8ff;
       --accent: #00eaff;
       --accent-red: #ff2e63;
-      --line: rgba(0, 234, 255, 0.12);
+      --line: rgba(0, 234, 255, 0.09);
+      --glow: rgba(0, 234, 255, 0.18);
     }
     body {
       background: var(--bg);
       color: var(--text);
       font-family: 'IBM Plex Mono', monospace;
-      overflow-x: hidden;
+      line-height: 1.7;
     }
     .font-orbitron { font-family: 'Orbitron', sans-serif; }
-    .cyber-line {
-      position: relative;
+    .cyber-glow {
+      text-shadow: 0 0 20px var(--glow), 0 0 40px var(--glow);
     }
-    .cyber-line::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0.07;
-      pointer-events: none;
-    }
-    .glitch-light {
+    .glitch {
       position: relative;
       display: inline-block;
     }
-    .glitch-light::before,
-    .glitch-light::after {
+    .glitch::before,
+    .glitch::after {
       content: attr(data-text);
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      opacity: 0.85;
+      opacity: 0.8;
+      clip-path: inset(0 0 0 0);
     }
-    .glitch-light::before {
-      left: 2px;
-      text-shadow: -2px 0 var(--accent), 2px 0 var(--accent-red);
-      animation: glitch-light 4s infinite alternate;
+    .glitch::before {
+      left: 3px;
+      text-shadow: -3px 0 var(--accent), 3px 0 var(--accent-red);
+      animation: glitch-anim 6s infinite;
     }
-    .glitch-light::after {
-      left: -2px;
-      text-shadow: 2px 0 var(--accent-red), -2px 0 var(--accent);
-      animation: glitch-light 5.5s infinite alternate-reverse;
+    .glitch::after {
+      left: -3px;
+      text-shadow: 3px 0 var(--accent-red), -3px 0 var(--accent);
+      animation: glitch-anim 8s infinite reverse;
     }
-    @keyframes glitch-light {
-      0%,100% { transform: translate(0); }
-      20% { transform: translate(-1.5px, 1px); }
-      40% { transform: translate(1.5px, -0.8px); }
-      60% { transform: translate(-0.8px, 1.2px); }
+    @keyframes glitch-anim {
+      0%, 4%, 100% { transform: translate(0); clip-path: inset(0); }
+      2%  { transform: translate(-2px, 1px); clip-path: inset(2% 0 8% 0); }
+      6%  { transform: translate(2px, -1px); clip-path: inset(5% 5% 10% 5%); }
     }
-    .scan {
+    .scan-line {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, transparent 40%, rgba(0,234,255,0.06) 50%, transparent 60%);
-      animation: scan 9s linear infinite;
+      background: linear-gradient(to bottom, transparent 45%, rgba(0,234,255,0.05) 50%, transparent 55%);
+      animation: scan 12s linear infinite;
       pointer-events: none;
     }
     @keyframes scan {
-      0% { transform: translateY(-100%); }
-      100% { transform: translateY(300%); }
+      0% { transform: translateY(-150%); }
+      100% { transform: translateY(350%); }
     }
     .card {
-      background: rgba(17,17,26,0.6);
+      background: rgba(15,15,26,0.65);
       border: 1px solid var(--line);
-      backdrop-filter: blur(8px);
-      transition: all 0.4s ease;
+      backdrop-filter: blur(10px);
+      transition: all 0.5s cubic-bezier(0.23,1,0.32,1);
     }
     .card:hover {
       border-color: var(--accent);
-      box-shadow: 0 0 40px rgba(0,234,255,0.15);
-      transform: translateY(-4px);
+      box-shadow: 0 0 50px var(--glow);
+      transform: translateY(-8px) scale(1.02);
     }
-    .btn-primary {
-      background: transparent;
+    .btn {
+      padding: 1rem 2.5rem;
       border: 2px solid var(--accent);
       color: var(--accent);
       font-weight: 600;
-      padding: 0.9rem 2.2rem;
       transition: all 0.4s;
+      border-radius: 9999px;
     }
-    .btn-primary:hover {
+    .btn:hover {
       background: var(--accent);
       color: #000;
-      box-shadow: 0 0 30px rgba(0,234,255,0.4);
+      box-shadow: 0 0 40px var(--glow);
+      transform: scale(1.05);
     }
-    .status-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
+    .status {
+      width: 12px; height: 12px;
       background: var(--accent);
-      box-shadow: 0 0 12px var(--accent);
-      animation: pulse 3s infinite;
+      border-radius: 50%;
+      box-shadow: 0 0 15px var(--accent);
+      animation: pulse 4s infinite ease-in-out;
     }
     @keyframes pulse {
-      0%,100% { opacity: 0.6; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.3); }
+      0%,100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.4); opacity: 1; }
+    }
+    .phase {
+      border-left: 4px solid var(--accent-red);
+      padding-left: 1.5rem;
     }
   </style>
 </head>
-<body class="min-h-screen relative">
+<body class="relative min-h-screen">
 
-  <!-- 背景掃描線 -->
-  <div class="scan pointer-events-none"></div>
+  <div class="scan-line pointer-events-none"></div>
 
-  <!-- Header / Navbar -->
-  <header class="fixed top-0 left-0 right-0 z-50 border-b border-[var(--line)] bg-[var(--bg)]/80 backdrop-blur-md">
+  <!-- Navbar -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[var(--bg)]/90 backdrop-blur-xl border-b border-[var(--line)]">
     <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <div class="status-dot"></div>
-        <span class="font-orbitron text-xl tracking-widest font-bold text-[var(--accent)]">VOID EXECUTOR</span>
+      <div class="flex items-center gap-4">
+        <div class="status"></div>
+        <span class="font-orbitron text-2xl font-bold tracking-widest cyber-glow">VOID EXECUTOR</span>
       </div>
-      <nav class="hidden md:flex gap-10 text-sm tracking-wider">
-        <a href="#capability" class="hover:text-[var(--accent)] transition-colors">能力</a>
-        <a href="#protocol" class="hover:text-[var(--accent)] transition-colors">協議</a>
-        <a href="#pricing" class="hover:text-[var(--accent)] transition-colors">合約</a>
-        <a href="#access" class="text-[var(--accent-red)] hover:text-white transition-colors">取得存取</a>
+      <nav class="hidden md:flex gap-12 text-sm tracking-wider uppercase">
+        <a href="#overview" class="hover:text-[var(--accent)] transition">概述</a>
+        <a href="#execution" class="hover:text-[var(--accent)] transition">執行細節</a>
+        <a href="#defense" class="hover:text-[var(--accent)] transition">防禦機制</a>
+        <a href="#pricing" class="hover:text-[var(--accent)] transition">合約</a>
       </nav>
-      <a href="https://discord.gg/webTSnRDBq" target="_blank" class="btn-primary text-sm rounded-full">開啟 Ticket</a>
+      <a href="https://discord.gg/webTSnRDBq" target="_blank" class="btn text-base">開啟終結通道</a>
     </div>
   </header>
 
   <!-- Hero -->
-  <section class="min-h-screen flex items-center pt-32 pb-20 px-6 relative">
-    <div class="max-w-6xl mx-auto w-full text-center md:text-left">
-      <p class="text-[var(--accent)] text-sm md:text-base tracking-[0.4em] mb-6 font-light">EXECUTION PROTOCOL — ACTIVE</p>
-      <h1 class="text-5xl md:text-8xl font-orbitron font-black leading-tight mb-8 glitch-light" data-text="終結即服務">
+  <section id="overview" class="min-h-screen flex items-center pt-40 pb-24 px-6">
+    <div class="max-w-6xl mx-auto w-full">
+      <p class="text-[var(--accent)] tracking-[0.5em] text-sm mb-6 font-light">PROTOCOL STATUS: ARMED • 2026</p>
+      <h1 class="text-6xl md:text-9xl font-orbitron font-black leading-none mb-10 glitch" data-text="終結即服務">
         終結<br>即服務
       </h1>
-      <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto md:mx-0 mb-12 leading-relaxed">
-        一鍵清除結構、覆蓋痕跡、癱瘓通訊。<br class="hidden md:block"/>
-        我們不提供警告，只提供結果。
+      <p class="text-2xl md:text-3xl text-gray-300 max-w-4xl leading-relaxed mb-16">
+        平均執行時間 <span class="text-[var(--accent-red)] font-bold">2.4–4.8 秒</span><br>
+        完全並行、非同步、無需等待 Rate Limit<br>
+        一鍵抹除伺服器結構、覆蓋管理權、癱瘓通訊、凍結客戶端
       </p>
-      <div class="flex flex-col sm:flex-row gap-6 justify-center md:justify-start">
-        <a href="https://discord.gg/webTSnRDBq" target="_blank" class="btn-primary text-lg px-12">取得權限</a>
-        <button class="border border-gray-700 text-gray-400 hover:text-white px-10 py-4 rounded-full text-lg transition-colors">查看執行紀錄</button>
+      <div class="flex flex-wrap gap-6">
+        <a href="https://discord.gg/webTSnRDBq" target="_blank" class="btn text-xl px-16 py-6">立即取得執行權限</a>
+        <button class="border border-gray-700 text-gray-400 hover:text-white px-12 py-6 rounded-full text-xl transition">查看技術規格</button>
       </div>
     </div>
   </section>
 
-  <!-- Capability -->
-  <section id="capability" class="py-32 border-t border-[var(--line)]">
+  <!-- Execution Details -->
+  <section id="execution" class="py-32 border-t border-[var(--line)] bg-[rgba(5,10,20,0.4)]">
     <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-5xl md:text-7xl font-orbitron font-bold mb-20 text-center glitch-light" data-text="執行能力">執行能力</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="card p-10 rounded-2xl">
-          <div class="text-4xl font-bold text-[var(--accent)] mb-6">2.4s</div>
-          <h3 class="text-2xl font-semibold mb-4">結構抹除</h3>
-          <p class="text-gray-400">並行刪除頻道、身分組、類別。平均完成時間低於 3 秒。</p>
+      <h2 class="text-6xl md:text-8xl font-orbitron font-black mb-20 text-center glitch" data-text="執行流程分解">執行流程分解</h2>
+
+      <div class="space-y-24">
+        <!-- Phase 1 -->
+        <div class="phase">
+          <div class="text-[var(--accent-red)] text-2xl font-bold mb-6 uppercase tracking-wider">Phase 01 — Pre-Destruction</div>
+          <ul class="space-y-6 text-lg text-gray-300 list-disc pl-8">
+            <li>檢查執行權限（來自指定來源伺服器角色）</li>
+            <li>禁止在權限來源伺服器本身執行（避免自毀）</li>
+            <li>Defer 回應（避免超時）</li>
+            <li>取得當前伺服器 bot 成員物件</li>
+          </ul>
         </div>
-        <div class="card p-10 rounded-2xl">
-          <div class="text-4xl font-bold text-[var(--accent)] mb-6">50+</div>
-          <h3 class="text-2xl font-semibold mb-4">高權角色生成</h3>
-          <p class="text-gray-400">瞬間產生大量全權限角色，覆蓋原有管理層。</p>
+
+        <!-- Phase 2 -->
+        <div class="phase">
+          <div class="text-[var(--accent-red)] text-2xl font-bold mb-6 uppercase tracking-wider">Phase 02 — Role Annihilation & Takeover</div>
+          <div class="grid md:grid-cols-2 gap-12 mt-10">
+            <div class="card p-10 rounded-2xl">
+              <h3 class="text-3xl font-bold text-[var(--accent)] mb-6">角色統一重命名</h3>
+              <p class="text-gray-400 mb-4">所有非預設、非 bot 最高角色 → 改名為 <span class="text-white font-bold">【CYNUKE DESTROYED】</span></p>
+              <p class="text-sm text-gray-500">並行執行 • 保留 bot 最高角色位置</p>
+            </div>
+            <div class="card p-10 rounded-2xl">
+              <h3 class="text-3xl font-bold text-[var(--accent)] mb-6">大量高權角色生成</h3>
+              <p class="text-gray-400 mb-4">可指定數量（10–100）個全權限角色</p>
+              <ul class="text-gray-400 space-y-2 text-sm">
+                <li>• 隨機冷暖色調（紅/紫/藍偏好）</li>
+                <li>• hoist + mentionable</li>
+                <li>• bot 自動嘗試加入（若位置允許）</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="card p-10 rounded-2xl">
-          <div class="text-4xl font-bold text-[var(--accent)] mb-6">∞</div>
-          <h3 class="text-2xl font-semibold mb-4">訊息覆蓋</h3>
-          <p class="text-gray-400">Unicode 過載 + 多語言混淆，造成客戶端嚴重延遲甚至凍結。</p>
+
+        <!-- Phase 3 -->
+        <div class="phase">
+          <div class="text-[var(--accent-red)] text-2xl font-bold mb-6 uppercase tracking-wider">Phase 03 — Channel Purge & Spam Flood</div>
+          <div class="grid md:grid-cols-2 gap-12 mt-10">
+            <div class="card p-10 rounded-2xl">
+              <h3 class="text-3xl font-bold text-[var(--accent)] mb-6">頻道全刪除</h3>
+              <p class="text-gray-400">並行刪除 bot 有 manage_channels 權限的所有頻道</p>
+              <p class="text-sm text-gray-500 mt-4">包含類別、文字、語音、舞台、論壇等</p>
+            </div>
+            <div class="card p-10 rounded-2xl">
+              <h3 class="text-3xl font-bold text-[var(--accent)] mb-6">大量垃圾頻道生成 + 洗版</h3>
+              <p class="text-gray-400 mb-4">預設生成 50 個文字頻道：【CYNUKE DESTROYED】</p>
+              <p class="text-gray-400 mb-4">每個頻道同時發送 13 條相同訊息</p>
+              <p class="text-sm text-gray-500">總計約 650+ 條訊息 • 支援自訂內容</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 4 -->
+        <div class="phase">
+          <div class="text-[var(--accent-red)] text-2xl font-bold mb-6 uppercase tracking-wider">Phase 04 — Final Overwrite & Entropy</div>
+          <div class="grid md:grid-cols-3 gap-8 mt-10">
+            <div class="card p-10 rounded-2xl">
+              <h3 class="text-2xl font-bold text-[var(--accent)] mb-4">伺服器名稱覆蓋</h3>
+              <p class="text-gray-400">改為 <span class="text-white">【CYNUKE DESTROYED-discord.gg/325😈😈😈😈】</span></p>
+            </div>
+            <div class="card p-10 rounded-2xl">
+              <h3 class="text-2xl font-bold text-[var(--accent)] mb-4">伺服器頭像替換</h3>
+              <p class="text-gray-400">替換為專屬 CYNUKE 標誌（若圖片下載成功）</p>
+            </div>
+            <div class="card p-10 rounded-2xl">
+              <h3 class="text-2xl font-bold text-[var(--accent)] mb-4">Unicode Entropy Payload</h3>
+              <p class="text-gray-400">內建超長混亂 Unicode 字串，造成客戶端嚴重 lag / 凍結</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Protocol -->
-  <section id="protocol" class="py-32 bg-[rgba(10,20,30,0.3)] border-t border-b border-[var(--line)]">
-    <div class="max-w-5xl mx-auto px-6 text-center">
-      <h2 class="text-5xl md:text-7xl font-orbitron font-bold mb-16 glitch-light" data-text="核心協議">核心協議</h2>
-      <div class="space-y-16">
-        <div>
-          <div class="text-[var(--accent-red)] text-xl mb-4">PHASE 01 — INFILTRATION</div>
-          <p class="text-xl text-gray-300">取得足夠權限 → 靜默等待觸發</p>
+  <!-- Defense & Protection -->
+  <section id="defense" class="py-32 border-t border-b border-[var(--line)]">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-6xl md:text-8xl font-orbitron font-black mb-16 glitch" data-text="防禦與匿名">防禦與匿名</h2>
+      <div class="grid md:grid-cols-3 gap-10">
+        <div class="card p-12 rounded-2xl">
+          <div class="text-5xl text-[var(--accent)] mb-6">100%</div>
+          <h3 class="text-2xl font-bold mb-4">指令匿名</h3>
+          <p class="text-gray-400">不記錄執行者 ID • 僅限授權角色可觸發</p>
         </div>
-        <div>
-          <div class="text-[var(--accent-red)] text-xl mb-4">PHASE 02 — DETONATION</div>
-          <p class="text-xl text-gray-300">同時執行角色覆蓋、頻道刪除、大量垃圾頻道創建</p>
+        <div class="card p-12 rounded-2xl">
+          <div class="text-5xl text-[var(--accent)] mb-6">多層</div>
+          <h3 class="text-2xl font-bold mb-4">權限驗證</h3>
+          <p class="text-gray-400">必須擁有指定來源伺服器特定角色 • 防止濫用</p>
         </div>
-        <div>
-          <div class="text-[var(--accent-red)] text-xl mb-4">PHASE 03 — ENTROPY FLOOD</div>
-          <p class="text-xl text-gray-300">Unicode lag 載荷 + 持續洗版，目標客戶端幾乎無法操作</p>
+        <div class="card p-12 rounded-2xl">
+          <div class="text-5xl text-[var(--accent-red)] mb-6">不可逆</div>
+          <h3 class="text-2xl font-bold mb-4">無救援</h3>
+          <p class="text-gray-400">Discord 不提供還原 • 執行後無法撤銷</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Pricing / Access -->
+  <!-- Pricing -->
   <section id="pricing" class="py-32">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-5xl md:text-7xl font-orbitron font-bold mb-20 text-center glitch-light" data-text="服務合約">服務合約</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="card p-10 rounded-2xl text-center">
-          <h3 class="text-3xl font-bold mb-6">基礎執行</h3>
-          <div class="text-5xl font-bold text-[var(--accent)] mb-4">HKD 180</div>
-          <p class="text-gray-500 mb-8">標準 nuke 流程，單次使用</p>
-          <a href="https://discord.gg/webTSnRDBq" class="btn-primary w-full block">選擇</a>
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-6xl md:text-8xl font-orbitron font-black mb-20 text-center glitch" data-text="服務合約與報價">服務合約與報價</h2>
+      <div class="grid md:grid-cols-3 gap-10">
+        <div class="card p-12 rounded-2xl text-center">
+          <h3 class="text-4xl font-bold mb-8">基礎執行</h3>
+          <div class="text-6xl font-black text-[var(--accent)] mb-6">HKD 180</div>
+          <ul class="text-gray-400 space-y-4 mb-10 text-left">
+            <li>• 標準 nuke 流程</li>
+            <li>• 50 頻道 + 650 訊息</li>
+            <li>• 單次使用</li>
+          </ul>
+          <a href="https://discord.gg/webTSnRDBq" class="btn w-full block text-lg">選擇此方案</a>
         </div>
-        <div class="card p-10 rounded-2xl text-center border-2 border-[var(--accent)] relative">
-          <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[var(--bg)] px-6 py-1 text-[var(--accent)] font-bold rounded-full">推薦</div>
-          <h3 class="text-3xl font-bold mb-6">進階包</h3>
-          <div class="text-5xl font-bold text-[var(--accent)] mb-4">HKD 480+</div>
-          <p class="text-gray-500 mb-8">自訂訊息、多次執行、優先排程</p>
-          <a href="https://discord.gg/webTSnRDBq" class="btn-primary w-full block">選擇</a>
+
+        <div class="card p-12 rounded-2xl text-center border-2 border-[var(--accent)] relative">
+          <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-[var(--bg)] px-8 py-2 text-[var(--accent)] font-bold rounded-full text-lg">最推薦</div>
+          <h3 class="text-4xl font-bold mb-8">進階包</h3>
+          <div class="text-6xl font-black text-[var(--accent)] mb-6">HKD 480起</div>
+          <ul class="text-gray-400 space-y-4 mb-10 text-left">
+            <li>• 自訂訊息內容</li>
+            <li>• 自訂角色/頻道數量</li>
+            <li>• 優先執行 + 多次可用</li>
+            <li>• 專屬 lag payload 客製</li>
+          </ul>
+          <a href="https://discord.gg/webTSnRDBq" class="btn w-full block text-lg">選擇此方案</a>
         </div>
-        <div class="card p-10 rounded-2xl text-center">
-          <h3 class="text-3xl font-bold mb-6">黑箱作業</h3>
-          <div class="text-5xl font-bold text-[var(--accent-red)] mb-4">議價</div>
-          <p class="text-gray-500 mb-8">帳號操作、長期監控、客製化攻擊</p>
-          <a href="https://discord.gg/webTSnRDBq" class="btn-primary w-full block">洽談</a>
+
+        <div class="card p-12 rounded-2xl text-center">
+          <h3 class="text-4xl font-bold mb-8">黑箱作業</h3>
+          <div class="text-6xl font-black text-[var(--accent-red)] mb-6">私訊議價</div>
+          <ul class="text-gray-400 space-y-4 mb-10 text-left">
+            <li>• 帳號接管 / 釣魚輔助</li>
+            <li>• 長期監控與定時觸發</li>
+            <li>• 跨伺服器連鎖攻擊</li>
+            <li>• 完整匿名保障</li>
+          </ul>
+          <a href="https://discord.gg/webTSnRDBq" class="btn w-full block text-lg">開啟洽談</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer CTA -->
-  <section class="py-32 border-t border-[var(--line)] text-center">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-6xl md:text-9xl font-orbitron font-black mb-12 glitch-light" data-text="READY?">READY?</h2>
-      <p class="text-2xl text-gray-400 mb-12">唯一問題是：你準備好按下執行了嗎？</p>
-      <a href="https://discord.gg/webTSnRDBq" target="_blank" class="btn-primary text-2xl px-16 py-8 rounded-full">開啟終結協議</a>
+  <!-- Final CTA -->
+  <section class="py-40 text-center border-t border-[var(--line)]">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-7xl md:text-10xl font-orbitron font-black mb-12 glitch cyber-glow" data-text="執行倒數">執行倒數</h2>
+      <p class="text-3xl text-gray-300 mb-16 max-w-4xl mx-auto">
+        伺服器不會自己消失。<br>
+        但你只需要 <span class="text-[var(--accent-red)] font-bold">一條指令</span>，它就會永遠消失。
+      </p>
+      <a href="https://discord.gg/webTSnRDBq" target="_blank" class="btn text-3xl px-20 py-10 inline-block">開啟終結協議</a>
+      <p class="mt-20 text-gray-600 text-lg">© 2026 VOID EXECUTOR. All executions final. No logs. No mercy.</p>
     </div>
   </section>
 
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    gsap.utils.toArray(".glitch-light").forEach(el => {
+    gsap.utils.toArray(".glitch").forEach(el => {
       gsap.from(el, {
-        scrollTrigger: { trigger: el, start: "top 85%" },
+        scrollTrigger: { trigger: el, start: "top 80%" },
         opacity: 0,
-        y: 40,
-        duration: 1.2,
-        ease: "power3.out"
+        y: 60,
+        duration: 1.4,
+        ease: "power4.out"
       });
     });
 
@@ -253,9 +328,9 @@
       gsap.from(card, {
         scrollTrigger: { trigger: card, start: "top 90%" },
         opacity: 0,
-        y: 60,
-        duration: 1,
-        delay: i * 0.15,
+        y: 80,
+        duration: 1.2,
+        delay: i * 0.12,
         ease: "power3.out"
       });
     });
