@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Cynuke Sync Executor | 多節點同步執行者</title>
-  <meta property="og:title" content="Cynuke Sync Executor">
+  <title>Cynuke - Quantum Sync Protocol | 量子同步協議</title>
+  <meta property="og:title" content="Cynuke - Quantum Sync Protocol">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://zynuke.lol/">
   <meta property="og:image" content="https://i.pinimg.com/1200x/13/41/45/13414519583c03a8576b45d6171c11c9.jpg">
-  <meta property="og:description" content="多節點並行。瞬間同步。結構重寫。全域覆蓋。當控制權需要重新定義，我們執行最終序列。">
-  <meta name="theme-color" content="#ff0d0d">
+  <meta property="og:description" content="多節點並行同步。結構瞬間重構。權限全局覆蓋。當伺服器需要被重新定義，Cynuke 執行最高效序列。">
+  <meta name="theme-color" content="#00d4ff">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+TC:wght@400;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -20,18 +20,18 @@
 
   <style>
     :root {
-      --bg-black: #000000;
-      --text-white: #eeeeee;
-      --accent-red: #ff0d0d;
-      --accent-glow: #ff002b;
-      --accent-cyan: #00f3ff;
-      --accent-purple: #bd00ff;
-      --blob-color: rgba(255, 13, 13, 0.38);
+      --bg-black: #0a0f1a;
+      --text-white: #e0f7ff;
+      --accent-cyan: #00d4ff;
+      --accent-glow: #00eaff;
+      --accent-purple: #7c3aed;
+      --accent-green: #10b981;
+      --blob-color: rgba(0, 212, 255, 0.25);
       font-size: 16px;
     }
     body {
       font-family: 'Inter', 'Noto Sans TC', sans-serif;
-      background: radial-gradient(circle at 10% 90%, #140000 0%, #000000 75%);
+      background: linear-gradient(135deg, #0a0f1a 0%, #0f172a 100%);
       color: var(--text-white);
       overflow-x: hidden;
       margin: 0;
@@ -40,108 +40,64 @@
       line-height: 1.6;
     }
     .font-mono { font-family: 'JetBrains Mono', monospace; }
-    .glitch { position: relative; display: inline-block; }
+    .glitch {
+      position: relative; display: inline-block;
+      color: var(--accent-cyan);
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
     .glitch::before, .glitch::after {
       content: attr(data-text);
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.9;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8;
     }
     .glitch::before {
-      left: 5px; text-shadow: -5px 0 var(--accent-glow), -10px 0 #000;
-      animation: glitch1 1.3s infinite alternate;
+      left: 2px; text-shadow: -2px 0 var(--accent-purple), 2px 0 var(--accent-green);
+      animation: glitch1 2s infinite alternate;
     }
     .glitch::after {
-      left: -5px; text-shadow: 5px 0 var(--accent-red), 10px 0 #000;
-      animation: glitch2 1.7s infinite alternate-reverse;
+      left: -2px; text-shadow: 2px 0 var(--accent-cyan), -2px 0 var(--accent-purple);
+      animation: glitch2 3s infinite alternate-reverse;
     }
     @keyframes glitch1 {
-      0%,100% { transform: skew(0deg); }
-      10% { transform: skew(5deg); }
-      20% { transform: skew(-5deg); }
+      0%,100% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -2px); }
     }
     @keyframes glitch2 {
-      0%,100% { transform: skew(0deg); }
-      15% { transform: skew(-4deg); }
-      30% { transform: skew(4deg); }
+      0%,100% { transform: translate(0); }
+      30% { transform: translate(3px, 1px); }
+      60% { transform: translate(-1px, -3px); }
     }
     .scanline-fast {
       position: absolute; inset: 0;
-      background: linear-gradient(to bottom, transparent, rgba(255,13,13,0.85), transparent);
-      height: 45%; animation: scan-fast 2.3s linear infinite;
+      background: linear-gradient(to bottom, transparent, rgba(0,212,255,0.15), transparent);
+      height: 40%; animation: scan-fast 4s linear infinite;
       pointer-events: none; z-index: 1;
     }
-    @keyframes scan-fast { 0% { transform: translateY(-220%); } 100% { transform: translateY(320%); } }
-    #shutter-top, #shutter-bottom { background: #000; transition: clip-path 1.5s cubic-bezier(0.77,0,0.175,1); }
-    .explosion-ring {
-      position: absolute; top: 50%; left: 50%; width: 0; height: 0;
-      border: 4px solid var(--accent-red); border-radius: 50%; opacity: 0;
-      transform: translate(-50%, -50%); box-shadow: 0 0 80px var(--accent-glow), 0 0 160px var(--accent-red);
-    }
+    @keyframes scan-fast { 0% { transform: translateY(-200%); } 100% { transform: translateY(300%); } }
     .start-btn {
-      padding: 1.2rem 5rem; border: 3px solid var(--accent-red);
-      color: white; font-size: 1.5rem; font-weight: 900; letter-spacing: 0.5em;
-      text-transform: uppercase; background: transparent; transition: all 0.6s;
-      box-shadow: 0 0 70px rgba(255,13,13,0.6);
+      padding: 1.2rem 5rem; border: 2px solid var(--accent-cyan);
+      color: var(--accent-cyan); font-size: 1.5rem; font-weight: 900; letter-spacing: 0.4em;
+      background: transparent; transition: all 0.6s;
+      box-shadow: 0 0 40px rgba(0,212,255,0.4);
     }
     .start-btn:hover {
-      background: var(--accent-red); color: #000; transform: scale(1.1);
-      box-shadow: 0 0 160px var(--accent-red);
+      background: var(--accent-cyan); color: #000; transform: scale(1.08);
+      box-shadow: 0 0 80px var(--accent-glow);
     }
-    #enter-blast { position: fixed; inset: 0; background: #ff0d0d; opacity: 0; pointer-events: none; z-index: 99999; transition: opacity 1.5s ease-out; }
-    #viewport { opacity: 0; transition: opacity 1.8s ease; }
-    .noise-overlay { opacity: 0.04; }
-    #webgl-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-    #mouse-blob {
-      position: fixed; top: 0; left: 0; width: 800px; height: 800px;
-      background: radial-gradient(circle, var(--blob-color) 0%, rgba(0,0,0,0) 65%);
-      border-radius: 50%; pointer-events: none; z-index: -1; opacity: 0.6;
-      transform: translate3d(-50%, -50%, 0); will-change: transform; mix-blend-mode: screen;
-    }
-    .hud-layer { position: fixed; inset: 0; z-index: 9900; pointer-events: none; padding: 20px; box-sizing: border-box; }
-    .hud-coords {
-      position: absolute; bottom: 35px; right: 40px;
-      font-family: 'JetBrains Mono'; font-size: 0.875rem; color: var(--accent-red);
-      opacity: 0.8; text-align: right; line-height: 1.6;
-    }
-    .chapter-indicator {
-      position: absolute; top: 30px; left: 30px;
-      font-family: 'JetBrains Mono'; font-size: 1rem; color: var(--text-white);
-      opacity: 0.5; letter-spacing: 2px;
-    }
-    @media (max-width: 768px) { .hud-coords { display: none; } }
-    .text-hero { text-shadow: 0 0 70px var(--accent-glow), 0 0 140px var(--accent-red); }
+    #enter-blast { background: #00d4ff; }
+    #mouse-blob { background: radial-gradient(circle, var(--blob-color) 0%, rgba(0,0,0,0) 65%); }
     .bento-card {
-      background: rgba(10, 10, 15, 0.6); border: 1px solid rgba(255, 255, 255, 0.1);
-      position: relative; overflow: hidden; backdrop-filter: blur(8px);
-      transition: border-color 0.3s ease, background-color 0.3s ease;
+      background: rgba(10, 15, 30, 0.6); border: 1px solid rgba(0,212,255,0.2);
+      backdrop-filter: blur(12px);
     }
     .bento-card:hover {
-      border-color: var(--accent-red); background: rgba(20, 15, 15, 0.8);
-      box-shadow: 0 0 60px var(--accent-red);
+      border-color: var(--accent-cyan); box-shadow: 0 0 50px rgba(0,212,255,0.3);
     }
-    .lag-marquee-container {
-      position: absolute; inset: 0; overflow: hidden; pointer-events: none;
-      display: flex; align-items: center; justify-content: center; opacity: 1; z-index: 0;
-      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    }
-    .lag-marquee-track { display: flex; white-space: nowrap; will-change: transform; }
     .lag-text-item {
-      font-family: 'JetBrains Mono'; font-size: 1.125rem;
-      color: rgba(255, 50, 50, 0.8); text-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
-      margin-right: 4rem; font-weight: 700; letter-spacing: 2px;
+      color: rgba(0,212,255,0.7); text-shadow: 0 0 10px rgba(0,212,255,0.5);
     }
-    .warp-transit {
-      height: 40vh; display: flex; align-items: center; justify-content: center;
-      position: relative; z-index: 10; pointer-events: none;
-    }
-    .warp-message {
-      font-family: 'Orbitron'; color: rgba(255, 255, 255, 0.3);
-      font-size: 1.5rem; letter-spacing: 0.5em; text-transform: uppercase;
-      animation: pulse-slow 3s infinite;
-    }
-    @keyframes pulse-slow { 0%,100%{opacity:0.1;} 50%{opacity:0.5;} }
-    body.loaded .anim-fade, body.loaded .anim-card, body.loaded .split-text, body.loaded .hero-sub, body.loaded #boot-log, body.loaded #start-content {
-      opacity: 1 !important; transform: translateY(0) !important;
-    }
+    .chapter-indicator { color: var(--accent-cyan); }
+    .hud-coords { color: var(--accent-green); }
   </style>
 </head>
 <body class="antialiased">
@@ -159,35 +115,35 @@
     <div class="relative z-10 w-full h-full flex flex-col items-center justify-center">
       <div id="intro-animation-container" class="relative w-80 h-80 flex items-center justify-center mb-16 pointer-events-none">
         <div id="dot-container" class="absolute w-full h-full flex items-center justify-center">
-          <div class="intro-dot absolute w-6 h-6 bg-red-600 rounded-full shadow-[0_0_40px_#ff0d0d]" id="dot1"></div>
-          <div class="intro-dot absolute w-6 h-6 bg-red-500 rounded-full shadow-[0_0_40px_#ff002b]" id="dot2"></div>
-          <div class="intro-dot absolute w-6 h-6 bg-red-700 rounded-full shadow-[0_0_40px_#cc0000]" id="dot3"></div>
+          <div class="intro-dot absolute w-6 h-6 bg-cyan-500 rounded-full shadow-[0_0_40px_#00d4ff]" id="dot1"></div>
+          <div class="intro-dot absolute w-6 h-6 bg-purple-500 rounded-full shadow-[0_0_40px_#7c3aed]" id="dot2"></div>
+          <div class="intro-dot absolute w-6 h-6 bg-green-500 rounded-full shadow-[0_0_40px_#10b981]" id="dot3"></div>
         </div>
         <div id="core-ball" class="absolute w-12 h-12 bg-white rounded-full opacity-0 scale-0 shadow-[0_0_100px_#ffffff]"></div>
         <div class="explosion-ring" id="explosion-ring"></div>
         <div id="logo-container" class="absolute w-full h-full flex items-center justify-center opacity-0 scale-50 glitch" data-text="CYNUKE">
-          <svg viewBox="0 0 100 100" class="w-64 h-64 drop-shadow-[0_0_50px_rgba(255,13,13,0.9)]">
-            <polygon points="50,5 89,27.5 89,72.5 50,95 11,72.5 11,27.5" fill="none" stroke="#ff0d0d" stroke-width="4"/>
-            <path d="M35 35 L65 35 L35 65 L65 65" fill="none" stroke="#ffffff" stroke-width="10" stroke-linejoin="bevel"/>
-            <circle cx="50" cy="50" r="6" fill="#ff002b" class="animate-pulse"/>
+          <svg viewBox="0 0 100 100" class="w-64 h-64 drop-shadow-[0_0_50px_rgba(0,212,255,0.9)]">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#00d4ff" stroke-width="3" stroke-dasharray="6 4"/>
+            <circle cx="50" cy="50" r="25" fill="none" stroke="#7c3aed" stroke-width="5" class="animate-pulse"/>
+            <circle cx="50" cy="50" r="8" fill="#10b981"/>
           </svg>
         </div>
       </div>
 
       <div id="start-content" class="opacity-0 flex flex-col items-center">
-        <div class="glitch text-6xl md:text-8xl font-black tracking-[-0.12em] text-red-600 mb-8" data-text="CYNUKE">CYNUKE</div>
-        <div class="font-mono text-2xl md:text-3xl text-red-700 tracking-[0.8em] mb-12 animate-pulse">SYNC EXECUTOR ONLINE // 2026</div>
-        <div id="boot-log" class="font-mono text-lg md:text-xl max-w-3xl text-left h-64 overflow-hidden opacity-0 leading-relaxed">
-          [00:00] SYNC PROTOCOL INITIATED...<br>
+        <div class="glitch text-6xl md:text-8xl font-black tracking-[-0.12em] text-cyan-400 mb-8" data-text="CYNUKE">CYNUKE</div>
+        <div class="font-mono text-2xl md:text-3xl text-purple-400 tracking-[0.8em] mb-12 animate-pulse">QUANTUM SYNC ACTIVE // 2026</div>
+        <div id="boot-log" class="font-mono text-lg md:text-xl max-w-3xl text-left h-64 overflow-hidden opacity-0 leading-relaxed text-green-400">
+          [00:00] PROTOCOL CORE AWAKENING...<br>
           [00:00.9] AUTH MATRIX → FULL LOAD<br>
-          [00:01.8] NODE TOKENS → 50 LINKED<br>
-          [00:02.7] RATE GATE → BYPASSED<br>
+          [00:01.8] NODE ARRAY → 50 LINKED<br>
+          [00:02.7] RATE LIMITER → DISABLED<br>
           [00:03.6] MASS RECONFIG → ARMED<br>
-          [00:04.5] GLOBAL OVERRIDE → CRITICAL<br>
-          [00:05.4] COLLECTIVE EXECUTION → READY
+          [00:04.5] GLOBAL SYNC ENGINE → CRITICAL<br>
+          [00:05.4] EXECUTION SEQUENCE → READY
         </div>
-        <button class="start-btn">INITIALIZE SYNC</button>
-        <div class="mt-10 text-base md:text-lg text-gray-600 font-mono animate-pulse">CLICK ANYWHERE OR PRESS KEY TO EXECUTE</div>
+        <button class="start-btn">INITIATE SYNC</button>
+        <div class="mt-10 text-base md:text-lg text-gray-500 font-mono animate-pulse">CLICK ANYWHERE TO CONNECT</div>
       </div>
     </div>
   </div>
@@ -199,88 +155,88 @@
   <div id="webgl-canvas"></div>
 
   <div class="hud-layer">
-    <div class="chapter-indicator" id="chapter-display">PART I: SYNC CORE</div>
+    <div class="chapter-indicator" id="chapter-display">PART I: QUANTUM CORE</div>
     <div class="hud-coords">
       NODE COUNT: <span id="warp-status">50</span><br>
-      SYNC RATE: <span id="speed-indicator">MAX</span><br>
-      LATENCY: 0.02s
+      SYNC LATENCY: <span id="speed-indicator">0.02s</span><br>
+      STATUS: ACTIVE
     </div>
   </div>
 
   <div id="viewport">
     <header class="fixed top-0 left-0 right-0 z-50 mix-blend-difference px-6 py-6 md:px-12 opacity-0" id="navbar">
       <div class="flex justify-between items-center max-w-[1800px] mx-auto">
-        <a href="#" class="text-xl md:text-2xl font-bold tracking-tighter hover:text-red-500 transition-colors">Cynuke</a>
+        <a href="#" class="text-xl md:text-2xl font-bold tracking-tighter hover:text-cyan-400 transition-colors">Cynuke</a>
         <nav class="hidden md:flex gap-8 text-sm font-medium">
-          <a href="#philosophy" class="hover:text-red-500 transition-colors nav-item">同步宣言</a>
-          <a href="#problem" class="hover:text-cyan-400 transition-colors nav-item">現有侷限</a>
-          <a href="#hyper-warp" class="hover:text-red-500 transition-colors nav-item">多節點同步</a>
-          <a href="#reset" class="hover:text-red-500 transition-colors nav-item">全域重構</a>
-          <a href="#services" class="hover:text-red-500 transition-colors nav-item">客製服務</a>
+          <a href="#philosophy" class="hover:text-cyan-400 transition-colors">同步原理</a>
+          <a href="#problem" class="hover:text-green-400 transition-colors">現有侷限</a>
+          <a href="#hyper-warp" class="hover:text-cyan-400 transition-colors">多節點引擎</a>
+          <a href="#reset" class="hover:text-cyan-400 transition-colors">全域重構</a>
+          <a href="#services" class="hover:text-cyan-400 transition-colors">客製方案</a>
         </nav>
-        <a href="#" target="_blank" class="font-medium text-sm md:text-base border border-white px-4 py-2 hover:bg-white hover:text-black transition-colors">申請節點</a>
+        <a href="#" target="_blank" class="font-medium text-sm md:text-base border border-cyan-400 px-4 py-2 hover:bg-cyan-400 hover:text-black transition-colors">申請接入</a>
       </div>
     </header>
 
     <main>
       <section class="relative min-h-screen flex flex-col justify-center border-b border-white/10 overflow-hidden" id="hero" data-chapter="CH.01 CORE">
         <div class="absolute inset-0 z-0 opacity-10">
-          <img src="https://i.pinimg.com/1200x/13/41/45/13414519583c03a8576b45d6171c11c9.jpg" alt="Background" class="w-full h-full object-cover brightness-[0.5] parallax-bg">
+          <img src="https://i.pinimg.com/1200x/13/41/45/13414519583c03a8576b45d6171c11c9.jpg" alt="Background" class="w-full h-full object-cover brightness-[0.4] parallax-bg">
         </div>
         <div class="relative z-10 px-6 md:px-12 max-w-[1800px] mx-auto w-full pt-20 pointer-events-none">
-          <h1 class="text-hero mb-8 text-white split-text mix-blend-difference glitch text-5xl md:text-7xl" data-text="我們是 全域同步的 執行者">
-            我們是<br>全域同步的<br>執行者。
+          <h1 class="text-hero mb-8 text-white split-text mix-blend-difference glitch text-5xl md:text-7xl" data-text="我們是 量子同步的 執行者">
+            我們是<br>量子同步的<br>執行者。
           </h1>
           <p class="text-base md:text-xl max-w-3xl text-gray-300 mb-12 opacity-0 hero-sub mix-blend-difference leading-relaxed">
-            Cynuke 是一套基於多帳號協同與非同步並行的 Discord 伺服器同步工具。<br>
-            <span class="text-white font-bold">角色統一命名、權限批量提升、結構瞬間重寫、訊息全域推送。</span><br>
-            當伺服器狀態需要被重新定義，Cynuke 提供最快速、最徹底的執行序列。
+            Cynuke 是一套基於多節點協同與非同步並行的 Discord 伺服器控制協議。<br>
+            <span class="text-cyan-400 font-bold">角色統一命名、權限批量提升、結構瞬間重寫、訊息全域推送、伺服器識別覆蓋。</span><br>
+            當控制權需要被重新定義，我們提供最高效、最精準的執行序列。
           </p>
         </div>
       </section>
 
-      <div class="warp-transit"><div class="warp-message">ENTERING SYNC VOID</div></div>
+      <div class="warp-transit"><div class="warp-message">ENTERING QUANTUM FIELD</div></div>
 
-      <section id="philosophy" class="min-h-screen flex items-center px-6 md:px-12 border-y border-white/10 bg-black/60 relative z-10 py-20 backdrop-blur-sm" data-chapter="CH.02 PHILOSOPHY">
+      <section id="philosophy" class="min-h-screen flex items-center px-6 md:px-12 border-y border-white/10 bg-black/60 relative z-10 py-20 backdrop-blur-sm" data-chapter="CH.02 PRINCIPLE">
         <div class="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           <div class="flex items-center">
-            <h2 class="text-4xl md:text-7xl font-bold tracking-tighter mb-8 split-text leading-tight glitch" data-text="為什麼要 瞬間重構？">
-              為什麼要<br>瞬間重構？
+            <h2 class="text-4xl md:text-7xl font-bold tracking-tighter mb-8 split-text leading-tight glitch text-cyan-400" data-text="為什麼需要 瞬間同步？">
+              為什麼需要<br>瞬間同步？
             </h2>
           </div>
           <div class="space-y-8 md:space-y-12">
             <div class="anim-fade opacity-0 translate-y-4">
-              <p class="text-lg md:text-2xl leading-relaxed text-gray-300 font-light border-l-2 border-red-500 pl-6">
-                「重建永遠比修補快，也更徹底。」
+              <p class="text-lg md:text-2xl leading-relaxed text-gray-300 font-light border-l-2 border-cyan-500 pl-6">
+                「控制權的重新定義，永遠比修補更快、更徹底。」
               </p>
             </div>
             <div class="anim-fade opacity-0 translate-y-4">
               <p class="text-lg md:text-2xl leading-relaxed text-gray-400 font-light">
-                一個伺服器可能花數月建立結構與權限，但當需要重新定義控制權，<br>
-                Cynuke 能在幾秒內完成**角色統一**、**權限提升**與**全域覆蓋**。
+                一個伺服器可能花數月建立結構與權限層級，但當需要快速重新定義控制權，<br>
+                Cynuke 能在極短時間內完成**角色統一**、**權限提升**與**全域覆蓋**。
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="problem" class="min-h-screen flex flex-col justify-center px-6 md:px-12 border-y border-white/10 bg-[#020202]/80 py-20 backdrop-blur-md" data-chapter="CH.03 LIMITS">
+      <section id="problem" class="min-h-screen flex flex-col justify-center px-6 md:px-12 border-y border-white/10 bg-[#020202]/80 py-20 backdrop-blur-md" data-chapter="CH.03 CONSTRAINTS">
         <div class="max-w-[1200px] mx-auto w-full">
           <h2 class="text-5xl md:text-6xl text-left mb-12 split-text text-white glitch" data-text="傳統方式 無法應對">
             傳統方式<br><span class="text-gray-600">無法應對</span>
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bento-card anim-card">
-              <h3 class="text-xl font-bold text-white mb-2">速率瓶頸</h3>
-              <p class="text-base text-gray-400">單一帳號受 API 每秒請求限制，無法大規模操作。</p>
+              <h3 class="text-xl font-bold text-white mb-2">速率限制</h3>
+              <p class="text-base text-gray-400">單一帳號受 Discord API 每秒請求數限制，無法處理大規模操作。</p>
             </div>
             <div class="bento-card anim-card" style="transition-delay:0.1s">
-              <h3 class="text-xl font-bold text-white mb-2">單線程限制</h3>
-              <p class="text-base text-gray-400">傳統腳本無法同時處理數十個動作。</p>
+              <h3 class="text-xl font-bold text-white mb-2">單線程瓶頸</h3>
+              <p class="text-base text-gray-400">傳統腳本無法同時處理數十個角色與頻道動作。</p>
             </div>
             <div class="bento-card anim-card" style="transition-delay:0.2s">
               <h3 class="text-xl font-bold text-white mb-2">偵測與延遲</h3>
-              <p class="text-base text-gray-400">平台安全機制會快速識別並限制異常行為。</p>
+              <p class="text-base text-gray-400">平台安全機制會快速識別並限制異常同步行為。</p>
             </div>
           </div>
         </div>
@@ -288,7 +244,7 @@
 
       <section id="solution" class="min-h-screen flex items-center justify-center px-6 md:px-12 border-y border-white/10 bg-black" data-chapter="CH.04 CORE">
         <div class="max-w-[1200px] mx-auto w-full text-center">
-          <div class="text-cyan-400 font-mono mb-4 animate-pulse text-lg">SYSTEM OVERRIDE</div>
+          <div class="text-cyan-400 font-mono mb-4 animate-pulse text-lg">PROTOCOL OVERRIDE</div>
           <h2 class="text-hero text-white split-text glitch text-5xl md:text-7xl" data-text="CYNUKE SYNC CORE">CYNUKE SYNC CORE</h2>
           <p class="text-lg md:text-xl text-gray-400 mx-auto mt-8 anim-fade max-w-2xl">
             採用多節點並行、非同步執行與全局權限協同，實現瞬間級的伺服器狀態同步與重構。
@@ -317,7 +273,7 @@
             <div class="bento-card p-6 md:p-8 min-h-[300px] flex flex-col justify-between anim-card" data-tilt>
               <div class="font-mono text-sm text-gray-500">並行節點 (PARALLEL NODES)</div>
               <div>
-                <p class="text-gray-300 text-base md:text-lg mb-4">多個授權節點同時運作，瞬間完成角色統一命名、權限批量提升與結構調整。</p>
+                <p class="text-gray-300 text-base md:text-lg mb-4">多個授權節點同時運作，瞬間完成角色命名統一、權限批量提升與結構調整。</p>
                 <p class="text-gray-500 text-sm font-mono">> 並行處理數百動作</p>
               </div>
             </div>
@@ -325,7 +281,7 @@
             <div class="bento-card p-6 md:p-8 min-h-[300px] flex flex-col justify-between col-span-1 md:col-span-2 anim-card" data-tilt style="transition-delay: 0.1s">
               <div class="flex justify-between items-center">
                 <div class="font-mono text-sm text-gray-500">核心執行層</div>
-                <div class="text-xs text-red-500 font-mono animate-pulse">LIVE EXECUTION</div>
+                <div class="text-xs text-cyan-400 font-mono animate-pulse">LIVE EXECUTION</div>
               </div>
               <pre class="text-xs md:text-sm text-gray-400 font-mono overflow-x-auto whitespace-pre-wrap break-all md:whitespace-pre">
 <span class="text-purple-400">async def</span> <span class="text-cyan-400">sync_all</span>(guild):
@@ -356,14 +312,14 @@
               </li>
               <li class="flex items-center justify-between border-b border-white/10 pb-2">
                 <span>反向同步</span>
-                <span class="text-red-500 animate-pulse">STANDBY</span>
+                <span class="text-cyan-400 animate-pulse">STANDBY</span>
               </li>
             </ul>
           </div>
           <div class="order-1 lg:order-2 flex justify-center">
-            <div class="bento-card w-full max-w-xs md:max-w-md aspect-square flex items-center justify-center relative rounded-full border-2 border-red-500/30 anim-scale" data-tilt>
+            <div class="bento-card w-full max-w-xs md:max-w-md aspect-square flex items-center justify-center relative rounded-full border-2 border-cyan-500/30 anim-scale" data-tilt>
               <div class="text-center z-10">
-                <div class="text-6xl md:text-9xl font-bold mb-2 tracking-tighter text-red-500 count-up" data-target="100">0</div>
+                <div class="text-6xl md:text-9xl font-bold mb-2 tracking-tighter text-cyan-400 count-up" data-target="100">0</div>
                 <div class="text-lg md:text-xl text-gray-400 font-mono tracking-widest">% SYNCED</div>
               </div>
             </div>
@@ -373,36 +329,36 @@
 
       <div class="warp-transit"><div class="warp-message">SYSTEM CRITICAL</div></div>
 
-      <section id="reset" class="min-h-screen flex flex-col justify-center px-6 md:px-12 border-y border-white/10 bg-red-950/10 relative py-20 backdrop-blur-md" data-chapter="CH.07 SYNC ENGINE">
+      <section id="reset" class="min-h-screen flex flex-col justify-center px-6 md:px-12 border-y border-white/10 bg-cyan-950/10 relative py-20 backdrop-blur-md" data-chapter="CH.07 SYNC ENGINE">
         <div class="max-w-[1800px] mx-auto w-full relative z-10">
           <div class="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-20">
             <div>
-              <div class="text-xs md:text-sm font-mono text-red-500 mb-4 anim-fade">MODULE BETA: MASS SYNC</div>
+              <div class="text-xs md:text-sm font-mono text-cyan-500 mb-4 anim-fade">MODULE BETA: MASS SYNC</div>
               <h2 class="text-4xl md:text-8xl font-bold tracking-tighter text-white split-text glitch" data-text="全域同步引擎">
                 全域<br>同步引擎
               </h2>
             </div>
             <div class="text-right hidden md:block anim-fade">
-              <div class="text-red-500 font-bold text-xl">v2.0</div>
+              <div class="text-cyan-400 font-bold text-xl">v2.0</div>
               <div class="text-gray-500 font-mono">ULTRAFAST EXECUTION</div>
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bento-card p-6 border-red-500/30 anim-card group min-h-[150px]" data-tilt>
-              <div class="text-red-500 text-lg font-bold mb-2">角色統一</div>
+            <div class="bento-card p-6 border-cyan-500/30 anim-card group min-h-[150px]" data-tilt>
+              <div class="text-cyan-400 text-lg font-bold mb-2">角色統一</div>
               <p class="text-sm text-gray-400">並行修改所有角色名稱為統一標識。</p>
             </div>
-            <div class="bento-card p-6 border-red-500/30 anim-card group min-h-[150px]" style="transition-delay: 0.1s" data-tilt>
-              <div class="text-red-500 text-lg font-bold mb-2">權限提升</div>
+            <div class="bento-card p-6 border-cyan-500/30 anim-card group min-h-[150px]" style="transition-delay: 0.1s" data-tilt>
+              <div class="text-cyan-400 text-lg font-bold mb-2">權限提升</div>
               <p class="text-sm text-gray-400">批量創建最高權限角色並分配。</p>
             </div>
-            <div class="bento-card p-6 border-red-500/30 anim-card group min-h-[150px]" style="transition-delay: 0.2s" data-tilt>
-              <div class="text-red-500 text-lg font-bold mb-2">結構清除</div>
+            <div class="bento-card p-6 border-cyan-500/30 anim-card group min-h-[150px]" style="transition-delay: 0.2s" data-tilt>
+              <div class="text-cyan-400 text-lg font-bold mb-2">結構清除</div>
               <p class="text-sm text-gray-400">移除所有可管理頻道，瞬間清空結構。</p>
             </div>
-            <div class="bento-card p-6 border-red-500/30 anim-card group min-h-[150px]" style="transition-delay: 0.3s" data-tilt>
-              <div class="text-red-500 text-lg font-bold mb-2">通道重建</div>
+            <div class="bento-card p-6 border-cyan-500/30 anim-card group min-h-[150px]" style="transition-delay: 0.3s" data-tilt>
+              <div class="text-cyan-400 text-lg font-bold mb-2">通道重建</div>
               <p class="text-sm text-gray-400">同時創建大量新頻道並推送訊息。</p>
             </div>
           </div>
@@ -418,8 +374,8 @@
             OVERLOAD<br>SEQUENCE
           </h2>
           <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto anim-fade">
-            特殊編碼載荷可觸發客戶端極端負載模式。<br>
-            <span class="text-white font-mono">overload.dat</span> 用於模擬高壓同步環境。
+            特殊同步載荷可觸發客戶端極端負載模式。<br>
+            <span class="text-cyan-400 font-mono">sync_load.dat</span> 用於模擬高壓同步環境。
           </p>
         </div>
       </section>
@@ -430,11 +386,11 @@
             <h2 class="text-4xl font-bold mb-4 split-text text-white glitch" data-text="執行控制台">執行控制台</h2>
             <p class="text-base md:text-lg text-gray-400 anim-fade">輸入授權序列，啟動同步流程。</p>
           </div>
-          <div class="w-full bg-black border border-white/20 rounded-lg overflow-hidden shadow-2xl anim-scale" data-tilt>
-            <div class="flex items-center px-4 py-2 border-b border-white/10 bg-[#111]">
+          <div class="w-full bg-black border border-cyan-400/20 rounded-lg overflow-hidden shadow-2xl anim-scale" data-tilt>
+            <div class="flex items-center px-4 py-2 border-b border-cyan-400/10 bg-[#0a1a2a]">
               <div class="flex gap-2">
-                <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
-                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div class="w-3 h-3 rounded-full bg-cyan-500 animate-pulse"></div>
+                <div class="w-3 h-3 rounded-full bg-purple-500"></div>
                 <div class="w-3 h-3 rounded-full bg-green-500"></div>
               </div>
               <div class="ml-4 text-xs font-mono text-gray-500">executor@cynuke:~/sync</div>
@@ -442,20 +398,20 @@
             <div class="p-6 h-[300px] md:h-[400px] font-mono text-base overflow-y-auto relative" id="terminal-output">
               <div class="text-gray-500 mb-2"># Initializing Sync Systems...</div>
               <div class="text-gray-500 mb-2"># Loading Modules: [sync.py] [role.py] [channel.py]</div>
-              <div class="text-red-500 mb-4">⚠ 執行序列已解除鎖定 (PROTOCOL ARMED).</div>
+              <div class="text-cyan-400 mb-4">⚠ 執行序列已解除鎖定 (PROTOCOL ARMED).</div>
               <div class="flex">
-                <span class="text-red-500 mr-2">➜</span>
+                <span class="text-cyan-400 mr-2">➜</span>
                 <span class="text-white mr-2">~</span>
                 <span class="text-white" id="terminal-input-display"></span>
-                <span class="w-2 h-5 bg-white animate-pulse ml-1"></span>
+                <span class="w-2 h-5 bg-cyan-400 animate-pulse ml-1"></span>
               </div>
             </div>
           </div>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 anim-stagger-list">
-            <button onclick="runCmd('sync_roles')" class="border border-white/20 py-4 text-sm font-mono text-white hover:bg-red-900/30 transition-colors">sync_roles</button>
-            <button onclick="runCmd('elevate_perms')" class="border border-white/20 py-4 text-sm font-mono text-white hover:bg-red-900/30 transition-colors">elevate_perms</button>
-            <button onclick="runCmd('rebuild_channels')" class="border border-white/20 py-4 text-sm font-mono text-white hover:bg-red-900/30 transition-colors">rebuild_channels</button>
-            <button onclick="runCmd('sys_status')" class="border border-white/20 py-4 text-sm font-mono text-white hover:bg-red-900/30 transition-colors">sys_status</button>
+            <button onclick="runCmd('sync_roles')" class="border border-cyan-400/20 py-4 text-sm font-mono text-white hover:bg-cyan-900/30 transition-colors">sync_roles</button>
+            <button onclick="runCmd('elevate_perms')" class="border border-cyan-400/20 py-4 text-sm font-mono text-white hover:bg-cyan-900/30 transition-colors">elevate_perms</button>
+            <button onclick="runCmd('rebuild_channels')" class="border border-cyan-400/20 py-4 text-sm font-mono text-white hover:bg-cyan-900/30 transition-colors">rebuild_channels</button>
+            <button onclick="runCmd('sys_status')" class="border border-cyan-400/20 py-4 text-sm font-mono text-white hover:bg-cyan-900/30 transition-colors">sys_status</button>
           </div>
         </div>
       </section>
@@ -470,32 +426,32 @@
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div class="bento-card member-card p-8 flex flex-col items-center text-center anim-card" data-tilt>
-              <div class="w-32 h-32 rounded-full overflow-hidden mb-6 border-2 border-white/10 relative">
+              <div class="w-32 h-32 rounded-full overflow-hidden mb-6 border-2 border-cyan-400/20 relative">
                 <img src="https://images-ext-1.discordapp.net/external/c608j5PYc2lPhiI3Ef8wj2H8ZieRe7j80pUl9fpBsIU/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/1423615877030481952/8633411e33b6950e766c0b1907de42b8.png?format=webp&quality=lossless&width=320&height=320" alt="Light" class="member-avatar w-full h-full object-cover">
               </div>
-              <h3 class="text-2xl font-bold mb-2 text-white">貓貓</h3>
-              <p class="text-sm text-gray-400 font-mono italic">「好兄弟 雖然之前吵架過。」</p>
+              <h3 class="text-2xl font-bold mb-2 text-cyan-400">貓貓</h3>
+              <p class="text-sm text-gray-400 font-mono italic">「同步是我們的語言。」</p>
             </div>
             <div class="bento-card member-card p-8 flex flex-col items-center text-center anim-card" style="transition-delay: 0.1s" data-tilt>
-              <div class="w-32 h-32 rounded-full overflow-hidden mb-6 border-2 border-white/10 relative">
+              <div class="w-32 h-32 rounded-full overflow-hidden mb-6 border-2 border-cyan-400/20 relative">
                 <img src="https://images-ext-1.discordapp.net/external/9fFWR6I5TYeZhw4ZRSyDr8_c6f1qe3nhiROitV9m-Zs/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/1431114017467924641/9b8a88485c3e28ba76a16e144bb225c2.png?format=webp&quality=lossless&width=625&height=625" onerror="this.src='https://ui-avatars.com/api/?name=FALED&background=random&color=fff'" alt="FALED" class="member-avatar w-full h-full object-cover">
               </div>
-              <h3 class="text-2xl font-bold mb-2 text-white">𝓒𝓸𝓷𝓴𝓪𝓧𝓩心碎的白神</h3>
-              <p class="text-sm text-gray-400 font-mono italic">協助同步模組開發。</p>
+              <h3 class="text-2xl font-bold mb-2 text-cyan-400">𝓒𝓸𝓷𝓴𝓪𝓧𝓩</h3>
+              <p class="text-sm text-gray-400 font-mono italic">核心同步模組設計</p>
             </div>
             <div class="bento-card member-card p-8 flex flex-col items-center text-center anim-card" style="transition-delay: 0.2s" data-tilt>
-              <div class="w-32 h-32 rounded-full overflow-hidden mb-6 border-2 border-white/10 relative">
+              <div class="w-32 h-32 rounded-full overflow-hidden mb-6 border-2 border-cyan-400/20 relative">
                 <img src="https://images-ext-1.discordapp.net/external/-_aj3wjkoLtVSc9-XW_tyAN99zvrcnqK0-QNotznIW4/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/1474086484590985389/6486035a0b46ddf43bfdbe8d3c7fc1fb.png?format=webp&quality=lossless&width=559&height=559" alt="神秘人" class="member-avatar w-full h-full object-cover">
               </div>
-              <h3 class="text-2xl font-bold mb-2 text-white">神秘人</h3>
-              <p class="text-sm text-gray-400 font-mono italic">核心執行層設計者</p>
+              <h3 class="text-2xl font-bold mb-2 text-cyan-400">神秘人</h3>
+              <p class="text-sm text-gray-400 font-mono italic">執行層優化專家</p>
             </div>
             <div class="bento-card member-card p-8 flex flex-col items-center text-center anim-card" style="transition-delay: 0.3s" data-tilt>
-              <div class="w-32 h-32 rounded-full overflow-hidden mb-6 border-2 border-white/10 relative">
+              <div class="w-32 h-32 rounded-full overflow-hidden mb-6 border-2 border-cyan-400/20 relative">
                 <img src="https://cdn.discordapp.com/avatars/1108004585349599273/ab87ad49effe6e4931d24f74fb023b2a.webp?size=1024" alt="IE" class="member-avatar w-full h-full object-cover">
               </div>
-              <h3 class="text-2xl font-bold mb-2 text-white">IE</h3>
-              <p class="text-sm text-gray-400 font-mono italic">同步測試與優化</p>
+              <h3 class="text-2xl font-bold mb-2 text-cyan-400">IE</h3>
+              <p class="text-sm text-gray-400 font-mono italic">同步測試與穩定</p>
             </div>
           </div>
         </div>
@@ -506,9 +462,9 @@
       <section id="services" class="min-h-screen flex items-center justify-center px-6 md:px-12 border-y border-white/10 relative bg-[#050505]/80 py-20 backdrop-blur-md" data-chapter="CH.11 CONTRACTS">
         <div class="max-w-[1800px] mx-auto w-full">
           <div class="mb-20 text-center">
-            <div class="text-sm font-mono text-gray-500 mb-4 anim-fade">EXECUTOR CONTRACTS</div>
-            <h2 class="text-5xl md:text-7xl font-bold tracking-tighter mb-8 split-text text-white glitch" data-text="服務項目與報價">
-              服務項目與報價
+            <div class="text-sm font-mono text-gray-500 mb-4 anim-fade">SYNC CONTRACTS</div>
+            <h2 class="text-5xl md:text-7xl font-bold tracking-tighter mb-8 split-text text-white glitch" data-text="客製同步服務">
+              客製同步服務
             </h2>
             <p class="text-base md:text-lg text-gray-400 max-w-2xl mx-auto anim-fade">
               提供專業客製化同步工具與自架託管服務。所有交易透過私訊進行。
@@ -516,49 +472,49 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="bento-card p-8 border-l-4 border-l-purple-500 anim-card min-h-[300px] flex flex-col" data-tilt>
+            <div class="bento-card p-8 border-l-4 border-l-cyan-500 anim-card min-h-[300px] flex flex-col" data-tilt>
               <div class="flex justify-between items-start mb-6">
-                <h3 class="text-2xl font-bold text-white">客製化同步頁面</h3>
-                <span class="bg-purple-900/50 text-purple-300 text-xs font-mono px-2 py-1 rounded">WEB DEV</span>
+                <h3 class="text-2xl font-bold text-white">客製同步介面</h3>
+                <span class="bg-cyan-900/50 text-cyan-300 text-xs font-mono px-2 py-1 rounded">WEB DEV</span>
               </div>
               <p class="text-gray-400 text-sm mb-6 flex-1">完全客製化設計、響應式版面、品牌一致性。</p>
               <div class="mt-auto">
-                <div class="text-3xl font-bold text-white mb-1">HKD 120 <span class="text-sm font-normal text-gray-500">起</span></div>
+                <div class="text-3xl font-bold text-white mb-1">HKD 150 <span class="text-sm font-normal text-gray-500">起</span></div>
                 <div class="text-xs text-gray-600 font-mono">依複雜度報價，私訊洽談</div>
               </div>
             </div>
 
-            <div class="bento-card p-8 border-l-4 border-l-purple-500 anim-card min-h-[300px] flex flex-col" style="transition-delay: 0.1s" data-tilt>
+            <div class="bento-card p-8 border-l-4 border-l-cyan-500 anim-card min-h-[300px] flex flex-col" style="transition-delay: 0.1s" data-tilt>
               <div class="flex justify-between items-start mb-6">
                 <h3 class="text-2xl font-bold text-white">客製同步工具</h3>
-                <span class="bg-purple-900/50 text-purple-300 text-xs font-mono px-2 py-1 rounded">TOOL DEV</span>
+                <span class="bg-cyan-900/50 text-cyan-300 text-xs font-mono px-2 py-1 rounded">TOOL DEV</span>
               </div>
-              <p class="text-gray-400 text-sm mb-6 flex-1">24/7 自架託管。支援角色統一、權限提升、結構重寫等功能。需多層驗證。</p>
+              <p class="text-gray-400 text-sm mb-6 flex-1">24/7 自架託管。支援角色統一、權限批量提升、結構重寫、訊息全域推送等功能。需多層驗證。</p>
               <div class="mt-auto">
-                <div class="text-3xl font-bold text-white mb-1">HKD 300 <span class="text-sm font-normal text-gray-500">起</span></div>
+                <div class="text-3xl font-bold text-white mb-1">HKD 350 <span class="text-sm font-normal text-gray-500">起</span></div>
                 <div class="text-xs text-gray-600 font-mono">依功能需求報價，私訊洽談</div>
               </div>
             </div>
 
-            <div class="bento-card p-8 border-l-4 border-l-red-500 lg:col-span-1 anim-card min-h-[300px] flex flex-col" style="transition-delay: 0.2s" data-tilt>
+            <div class="bento-card p-8 border-l-4 border-l-green-500 lg:col-span-1 anim-card min-h-[300px] flex flex-col" style="transition-delay: 0.2s" data-tilt>
               <div class="flex justify-between items-start mb-6">
                 <h3 class="text-2xl font-bold text-white">進階同步序列</h3>
-                <span class="bg-red-900/50 text-red-300 text-xs font-mono px-2 py-1 rounded">ADVANCED</span>
+                <span class="bg-green-900/50 text-green-300 text-xs font-mono px-2 py-1 rounded">ADVANCED</span>
               </div>
               <p class="text-gray-400 text-sm mb-6 flex-1">
                 針對特殊需求提供深度客製化。<br>
-                <span class="text-red-400 italic">「當一切需要被重新定義，我們提供最徹底的同步方案。」</span>
+                <span class="text-green-400 italic">「當一切需要被重新定義，我們提供最徹底的同步方案。」</span>
               </p>
               <div class="mt-auto">
-                <div class="text-3xl font-bold text-red-500 mb-1">私訊報價</div>
+                <div class="text-3xl font-bold text-green-400 mb-1">私訊報價</div>
                 <div class="text-xs text-gray-600 font-mono">100% 匿名保障</div>
               </div>
             </div>
 
-            <div class="bento-card p-8 border-l-4 border-l-red-500 lg:col-span-3 anim-card min-h-[200px] flex flex-col items-center justify-center text-center" style="transition-delay: 0.4s" data-tilt>
-              <h3 class="text-3xl font-bold text-white mb-4">授權申請</h3>
+            <div class="bento-card p-8 border-l-4 border-l-green-500 lg:col-span-3 anim-card min-h-[200px] flex flex-col items-center justify-center text-center" style="transition-delay: 0.4s" data-tilt>
+              <h3 class="text-3xl font-bold text-white mb-4">接入申請</h3>
               <p class="text-gray-400 text-sm mb-6">所有進階功能需通過驗證申請。</p>
-              <a href="#" target="_blank" class="px-8 py-3 bg-red-600 text-white font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors">提交申請</a>
+              <a href="#" target="_blank" class="px-8 py-3 bg-cyan-600 text-white font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors">提交申請</a>
             </div>
           </div>
         </div>
@@ -570,13 +526,13 @@
             加入同步<br>Join the Sync
           </h2>
           <div class="flex flex-col md:flex-row gap-8 justify-center items-center mt-16 anim-fade">
-            <a href="#" target="_blank" class="px-16 py-6 bg-white text-black text-2xl md:text-3xl font-bold tracking-wider hover:bg-red-600 hover:text-white transition-colors w-full md:w-auto rounded">
-              申請節點
+            <a href="#" target="_blank" class="px-16 py-6 bg-cyan-500 text-black text-2xl md:text-3xl font-bold tracking-wider hover:bg-white hover:text-black transition-colors w-full md:w-auto rounded">
+              申請接入
             </a>
           </div>
           <p class="mt-20 text-xl md:text-2xl text-gray-500 font-mono anim-fade">
             © 2026 Cynuke. All nodes synced.<br>
-            Powered by Multi-Node Sync & Global Override.
+            Powered by Multi-Node Sync & Global Override Engine.
           </p>
         </div>
       </section>
@@ -612,9 +568,9 @@
         m.style.position = 'absolute';
         m.style.width = (80 + Math.random()*250) + 'px';
         m.style.height = (2 + Math.random()*3) + 'px';
-        m.style.background = 'linear-gradient(to right, transparent, #ff0d0d, #ff002b)';
+        m.style.background = 'linear-gradient(to right, transparent, #00d4ff, #7c3aed)';
         m.style.transform = 'rotate(45deg)';
-        m.style.boxShadow = '0 0 20px #ff0d0d';
+        m.style.boxShadow = '0 0 20px #00d4ff';
         meteorContainer.appendChild(m);
       }
 
@@ -666,7 +622,7 @@
       requestAnimationFrame(raf);
 
       const scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0x050505, 0.0003);
+      scene.fog = new THREE.FogExp2(0x0a0f1a, 0.0003);
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
       camera.position.z = 1000;
       const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
@@ -677,11 +633,11 @@
       const posArray = new Float32Array(particleCount * 3);
       const colorArray = new Float32Array(particleCount * 3);
       const colors = [
-        new THREE.Color(0xff0d0d),
-        new THREE.Color(0xff002b),
-        new THREE.Color(0xcc0000),
+        new THREE.Color(0x00d4ff),
+        new THREE.Color(0x7c3aed),
+        new THREE.Color(0x10b981),
         new THREE.Color(0xffffff),
-        new THREE.Color(0x8a0000)
+        new THREE.Color(0x0a1a2a)
       ];
       for(let i = 0; i < particleCount; i++) {
         const radius = 6000 * Math.sqrt(Math.random());
@@ -814,7 +770,7 @@
         const output = document.getElementById('terminal-output');
         const newCmd = document.createElement('div');
         newCmd.className = "mb-2";
-        newCmd.innerHTML = `<span class="text-red-500 mr-2">➜</span><span class="text-white">~ ${cmd}</span>`;
+        newCmd.innerHTML = `<span class="text-cyan-400 mr-2">➜</span><span class="text-white">~ ${cmd}</span>`;
         output.insertBefore(newCmd, output.lastElementChild);
         const respEl = document.createElement('div');
         respEl.innerHTML = `<div class="text-gray-400 pl-6 mb-2">執行 ${cmd}... [同步完成]</div>`;
