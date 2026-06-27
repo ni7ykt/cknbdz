@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💀 炸麥工具 - 聲卡毀滅者</title>
     
-    <meta property="og:title" content="炸麥工具 - 聲卡毀滅者">
+    <meta property="og:title" content="💀 炸麥工具 - 聲卡毀滅者">
     <meta property="og:description" content="不用禁你麥，你會自己關 Discord。爆麥＋八環奏樂＋回音疊加。">
     <meta property="og:image" content="https://i.pinimg.com/1200x/13/41/45/13414519583c03a8576b45d6171c11c9.jpg">
     <meta name="theme-color" content="#ff0d0d">
@@ -97,6 +97,10 @@
             transform: scale(1.05);
             box-shadow: 0 0 25px rgba(255, 13, 13, 0.8);
         }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -107,32 +111,43 @@
 <header class="fixed top-0 left-0 right-0 z-50 px-6 py-5 backdrop-blur-sm border-b border-white/10 bg-black/50">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="text-xl font-bold tracking-tighter">💀 炸麥工具</div>
+        <nav class="hidden md:flex gap-6 text-sm font-medium">
+            <a href="#features" class="hover:text-red-500 transition">功能</a>
+            <a href="#howto" class="hover:text-red-500 transition">教學</a>
+            <a href="#download" class="hover:text-red-500 transition">下載</a>
+        </nav>
         <a href="#download" class="border border-red-500 px-5 py-2 text-sm font-medium hover:bg-red-500 hover:text-black transition">下載軍火</a>
     </div>
 </header>
 
 <main class="max-w-7xl mx-auto px-5 pt-28 pb-20">
 
-    <!-- HERO -->
+    <!-- ===== HERO ===== -->
     <section class="text-center mb-28">
-        <div class="text-red-500 font-mono text-sm mb-4">⚠ 聲卡毀滅協定 ⚠</div>
+        <div class="text-red-500 font-mono text-sm mb-4 animate-pulse">⚡ 聲卡毀滅協定 v3.0 ⚡</div>
         <h1 class="text-hero mb-6 glitch font-black" data-text="炸爛你的優越感">
             炸爛你的<br>優越感
         </h1>
-        <p class="text-gray-400 max-w-2xl mx-auto text-lg">
+        <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
             不用禁你麥，你會自己關 Discord。<br>
             爆麥＋八環奏樂＋回音疊加 — 三層毀滅。
         </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+            <span class="px-4 py-2 border border-red-500/50 rounded-full text-xs text-red-400 font-mono">🔴 即時處理</span>
+            <span class="px-4 py-2 border border-red-500/50 rounded-full text-xs text-red-400 font-mono">🎧 VB-Cable 支援</span>
+            <span class="px-4 py-2 border border-red-500/50 rounded-full text-xs text-red-400 font-mono">🔥 低延遲</span>
+            <span class="px-4 py-2 border border-red-500/50 rounded-full text-xs text-red-400 font-mono">💀 雙音軌疊加</span>
+        </div>
     </section>
 
-    <!-- 炸麥神曲 · 自動循環播放（你指定的 YouTube 音樂） -->
+    <!-- ===== 炸麥神曲 ===== -->
     <section class="mb-20 text-center">
         <div class="text-red-500 font-mono text-sm mb-2">🎵 官方炸麥神曲 🎵</div>
         <div class="bento-card p-5 max-w-3xl mx-auto">
             <div class="aspect-video rounded-xl overflow-hidden">
                 <iframe 
                     class="w-full h-full"
-                    src="https://www.yout-ube.com/embed/EZt6mZ-Te1U?autoplay=1&loop=1&playlist=EZt6mZ-Te1U&controls=1&mute=0"
+                    src="https://www.youtube.com/embed/EZt6mZ-Te1U?autoplay=1&loop=1&playlist=EZt6mZ-Te1U&controls=1&mute=0"
                     title="炸麥背景音樂"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -147,73 +162,129 @@
         </div>
     </section>
 
-    <!-- 嗆人宣言區 -->
+    <!-- ===== 嗆人宣言 ===== -->
     <section class="grid md:grid-cols-2 gap-10 mb-32">
         <div class="bento-card p-8">
             <div class="text-4xl mb-4">💀</div>
             <p class="text-xl font-bold mb-3">「不要在那邊認知上有障礙」</p>
-            <p class="text-gray-400">開個聲卡面板就以為自己很大聲？<br>禁麥以為自己很屌？</p>
+            <p class="text-gray-400 leading-relaxed">
+                開個聲卡面板就以為自己很大聲？<br>
+                禁麥以為自己很屌？<br>
+                壓聲音以為自己很強？
+            </p>
+            <p class="text-red-400 mt-4 font-mono text-sm">#你只是還沒遇到真正的毀滅</p>
         </div>
         <div class="bento-card p-8 border-l-4 border-l-red-500">
             <div class="text-4xl mb-4">🔥</div>
             <p class="text-xl font-bold mb-3">我連麥都不用禁</p>
-            <p class="text-gray-400">爆麥增益 0~100 萬<br>YouTube 雙音軌獨立音量 + 回音延遲 & 衰減</p>
+            <p class="text-gray-400 leading-relaxed">
+                爆麥增益 0~100 萬<br>
+                YouTube 雙音軌獨立音量 + 回音延遲 & 衰減<br>
+                低重音模式 + 立體回音<br>
+                你的優越感會在 0.5 秒內崩塌
+            </p>
             <div class="mt-4 text-red-400 font-mono text-sm">#炸爛你自信 #不用禁你自己會走</div>
         </div>
     </section>
 
-    <!-- 功能亮點 -->
+    <!-- ===== 功能介紹 ===== -->
     <div class="warp-transit"></div>
-    <section class="mb-32">
-        <div class="text-center mb-12">
+    <section id="features" class="mb-32">
+        <div class="text-center mb-16">
             <div class="text-red-500 font-mono text-sm">🔥 核心軍火庫 🔥</div>
-            <h2 class="text-4xl md:text-5xl font-bold mt-2 glitch" data-text="你可以同時擁有">
-                你可以同時擁有
+            <h2 class="text-4xl md:text-5xl font-bold mt-2 glitch" data-text="七層毀滅">
+                七層毀滅
             </h2>
+            <p class="text-gray-400 mt-4 max-w-2xl mx-auto">每一層都是一次對你優越感的精準打擊</p>
         </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="bento-card p-6 text-center"><div class="text-3xl mb-2">🎤</div><div class="font-bold">爆麥增益</div><div class="text-sm text-gray-400">0 ~ 1,000,000</div></div>
-            <div class="bento-card p-6 text-center"><div class="text-3xl mb-2">🎵</div><div class="font-bold">八環奏樂</div><div class="text-sm text-gray-400">第二首 YouTube 疊加</div></div>
-            <div class="bento-card p-6 text-center"><div class="text-3xl mb-2">🔊</div><div class="font-bold">回音延遲+衰減</div><div class="text-sm text-gray-400">獨立控制</div></div>
-            <div class="bento-card p-6 text-center"><div class="text-3xl mb-2">🎧</div><div class="font-bold">VB-Cable</div><div class="text-sm text-gray-400">虛擬輸出</div></div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <div class="bento-card p-8 text-center">
+                <div class="feature-icon">🎤</div>
+                <h3 class="text-xl font-bold mb-2 text-red-400">爆麥增益</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">0 ~ 100 萬倍即時增益，把你的聲音推到物理極限。超越 16-bit 的裁切邊緣，讓每個音節都充滿毀滅性的力量。</p>
+            </div>
+
+            <div class="bento-card p-8 text-center">
+                <div class="feature-icon">📢</div>
+                <h3 class="text-xl font-bold mb-2 text-orange-400">白噪音疊加</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">即時生成隨機雜訊，強度 0 ~ 5000 可調。讓你的聲音聽起來像從一場數位風暴中逃出來。</p>
+            </div>
+
+            <div class="bento-card p-8 text-center">
+                <div class="feature-icon">🎵</div>
+                <h3 class="text-xl font-bold mb-2 text-yellow-400">八環奏樂</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">第二首 YouTube 音樂獨立疊加，音量獨立控制。讓炸裂的人聲與背景音樂形成毀滅性的對位。</p>
+            </div>
+
+            <div class="bento-card p-8 text-center">
+                <div class="feature-icon">🔊</div>
+                <h3 class="text-xl font-bold mb-2 text-blue-400">立體回音</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">左右聲道獨立延遲（0.05 ~ 1.0 秒），衰減係數 0 ~ 1.0。讓你的聲音在虛擬空間中無限反射。</p>
+            </div>
+
+            <div class="bento-card p-8 text-center">
+                <div class="feature-icon">🔊</div>
+                <h3 class="text-xl font-bold mb-2 text-purple-400">低重音模式</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">次諧波生成 + 低頻強化，讓你的聲音低沉到震碎玻璃。適合搭配炸麥使用。</p>
+            </div>
+
+            <div class="bento-card p-8 text-center">
+                <div class="feature-icon">📂</div>
+                <h3 class="text-xl font-bold mb-2 text-green-400">本地檔案支援</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">支援 MP3 / WAV / MP4 / FLAC / OGG / M4A / AAC。不用網路也能炸。</p>
+            </div>
         </div>
     </section>
 
-    <!-- 技術 / 嗆人台詞區 -->
+    <!-- ===== 簡易教學 ===== -->
     <div class="warp-transit"></div>
-    <section class="grid md:grid-cols-2 gap-12 items-center mb-32">
-        <div>
-            <div class="text-red-500 font-mono text-sm mb-2">REAL TALK</div>
-            <h2 class="text-3xl md:text-5xl font-bold mb-4 glitch" data-text="你以為你很屌？">
-                你以為你很屌？
+    <section id="howto" class="mb-32">
+        <div class="text-center mb-16">
+            <div class="text-red-500 font-mono text-sm">📖 三分鐘上手</div>
+            <h2 class="text-4xl md:text-5xl font-bold mt-2 glitch" data-text="開始毀滅">
+                開始毀滅
             </h2>
-            <p class="text-gray-400 mb-4">壓聲音以為自己很大聲？<br>禁麥就覺得自己無敵？</p>
-            <p class="text-white font-mono text-sm">👉 炸麥工具一開，你連自己講話都聽不到。</p>
         </div>
-        <div class="bento-card p-8">
-            <pre class="text-xs md:text-sm text-gray-300 font-mono overflow-x-auto"><span class="text-red-500">async def</span> <span class="text-cyan-400">blast_core</span>():
-    mic *= blast_gain
-    mic += noise * 3000
-    output = mic + (music1 * vol1) + (music2 * vol2)
-    echo = apply_delay(output, delay=0.3, decay=0.6)
-    <span class="text-green-400">return</span> "<span class="text-white">你已經離開語音頻道</span>"</pre>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bento-card p-6 text-center">
+                <div class="text-3xl font-bold text-red-500 mb-3">1</div>
+                <h4 class="font-bold text-white">下載 + 安裝 VB-CABLE</h4>
+                <p class="text-gray-400 text-sm">安裝虛擬音效卡，讓聲音能送進 Discord</p>
+            </div>
+            <div class="bento-card p-6 text-center">
+                <div class="text-3xl font-bold text-red-500 mb-3">2</div>
+                <h4 class="font-bold text-white">打開炸麥工具</h4>
+                <p class="text-gray-400 text-sm">選擇麥克風 + CABLE Output，調整效果</p>
+            </div>
+            <div class="bento-card p-6 text-center">
+                <div class="text-3xl font-bold text-red-500 mb-3">3</div>
+                <h4 class="font-bold text-white">Discord 設定</h4>
+                <p class="text-gray-400 text-sm">輸入裝置選 CABLE Output，開始炸</p>
+            </div>
         </div>
     </section>
 
-    <!-- 下載區 -->
+    <!-- ===== 下載區 ===== -->
     <div class="warp-transit"></div>
     <section id="download" class="text-center py-16 mb-20">
         <h2 class="text-4xl md:text-6xl font-bold mb-6 glitch" data-text="開始毀滅">
             開始毀滅
         </h2>
-        <p class="text-gray-400 mb-8 max-w-xl mx-auto">一鍵炸麥</p>
-        <a href="#" class="download-btn inline-block px-12 py-5 text-2xl font-bold text-white rounded-full shadow-xl">
-             下載炸麥工具
+        <p class="text-gray-400 mb-8 max-w-xl mx-auto text-lg">
+            Windows 11 / 10 · 免安裝 Python · 一鍵炸裂
+        </p>
+        <a href="https://drive.google.com/file/d/1Ghy3YEroKkiHi2m5nchfl0I-va2d3lE3/view" target="_blank" class="download-btn inline-block px-12 py-5 text-2xl font-bold text-white rounded-full shadow-xl hover:scale-105 transition-transform">
+            ⬇️ 下載炸麥工具
         </a>
-        <div class="mt-6 text-xs text-gray-500">⚠ 請先調低喇叭音量，建議搭配 VB-Cable</div>
+        <div class="mt-6 text-xs text-gray-500">
+            ⚠ 請先調低喇叭音量，建議搭配 VB-Cable
+        </div>
     </section>
 
-    <!-- 結尾嗆人 -->
+    <!-- ===== 結尾 ===== -->
     <div class="warp-transit"></div>
     <footer class="text-center py-10 text-gray-500 text-sm">
         💀 不用禁你麥，你會自己關 Discord<br>
@@ -221,16 +292,6 @@
     </footer>
 
 </main>
-
-<script>
-    // 把下載連結換成你的真實 EXE 網址
-    const btn = document.querySelector('.download-btn');
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        // 👇 這裡放你的 EXE 真實下載連結
-        window.location.href = "https://drive.google.com/file/d/1Ghy3YEroKkiHi2m5nchfl0I-va2d3lE3/view";
-    });
-</script>
 
 </body>
 </html>
